@@ -87,12 +87,12 @@ ollama pull llama3.2
 
 **Quick Start:**
 ```bash
-cd Project1-LocalTestCaseGenerator
+cd Project_01_LocalTestCaseGenerator
 chmod +x start_system.sh
 ./start_system.sh
 ```
 
-📂 **[View Project Details →](./Project1-LocalTestCaseGenerator/README.md)**
+📂 **[View Project Details →](./Project_01_LocalTestCaseGenerator/README.md)**
 
 ---
 
@@ -115,13 +115,13 @@ chmod +x start_system.sh
 
 **Quick Start:**
 ```bash
-cd Project2-Selenium2PlaywrightLocalLLM
+cd Project_02_Selenium2PlaywrightLocalLLM
 npm install
 cd ui && npm install && cd ..
 npm run dev
 ```
 
-📂 **[View Project Details →](./Project2-Selenium2PlaywrightLocalLLM/README.md)**
+📂 **[View Project Details →](./Project_02_Selenium2PlaywrightLocalLLM/README.md)**
 
 ---
 
@@ -156,11 +156,11 @@ npm run dev
 
 **Quick Start:**
 ```bash
-cd Project3-RICE_POT_PROMPT_SeleniumFrameowrk
+cd Project_03_RICE_POT_PROMPT_SeleniumFramework
 mvn clean test
 ```
 
-📂 **[View Project Details →](./Project3-RICE_POT_PROMPT_SeleniumFrameowrk/README.md)**
+📂 **[View Project Details →](./Project_03_RICE_POT_PROMPT_SeleniumFramework/README.md)**
 
 ---
 
@@ -187,7 +187,7 @@ mvn clean test
 - `Task1_TC_PRD.md` — PRD-to-test-case output example
 - `Task2_BUG_Report.md` — Bug report template
 
-📂 **[View Project Folder →](./Project4-LocalLLM_PROMOT_TEMPLATE/)**
+📂 **[View Project Folder →](./Project_04_LocalLLM_PROMPT_TEMPLATE/)**
 
 ---
 
@@ -217,12 +217,12 @@ mvn clean test
 
 **Quick Start:**
 ```bash
-cd Project5-ClaudeCodeJobAssitantBoard/job-board-assistant
+cd Project_05_ClaudeCodeJobAssistantBoard/job-board-assistant
 npm install
 npm run dev
 ```
 
-📂 **[View Project Details →](./Project5-ClaudeCodeJobAssitantBoard/job-board-assistant/README.md)**
+📂 **[View Project Details →](./Project_05_ClaudeCodeJobAssistantBoard/job-board-assistant/README.md)**
 
 ---
 
@@ -243,7 +243,7 @@ npm run dev
 - ✍️ Effective AI prompting for professional document generation
 - 📋 Resume formatting best practices for QA Managers and SDETs
 
-📂 **[View Project Folder →](./Project6-ResumeFix_LinkedIn/)**
+📂 **[View Project Folder →](./Project_06_ResumeFix_LinkedIn/)**
 
 ---
 
@@ -289,14 +289,14 @@ GET  /api/settings/llm/models  → List available Ollama models
 
 **Quick Start:**
 ```bash
-cd Project7-TestPlan_AI_AGENT_JIRA/intelligent-test-plan-agent
+cd Project_07_TestPlan_AI_AGENT_JIRA/intelligent-test-plan-agent
 # Backend
 cd backend && npm install && npm run dev
 # Frontend (in another terminal)
 cd frontend && npm install && npm run dev
 ```
 
-📂 **[View Project Details →](./Project7-TestPlan_AI_AGENT_JIRA/AGENTS.md)**
+📂 **[View Project Details →](./Project_07_TestPlan_AI_AGENT_JIRA/AGENTS.md)**
 
 ---
 
@@ -317,7 +317,7 @@ cd frontend && npm install && npm run dev
 - ⚡ Automating repetitive QA tasks with visual pipelines
 - 🛠️ Connecting APIs, databases, and notification systems
 
-📂 **[View Project Folder →](./Project8-n8n_Learning/)**
+📂 **[View Project Folder →](./Project_08_n8n_Learning/)**
 
 ---
 
@@ -383,40 +383,40 @@ graph LR
 
 ```
 AITesterBlueprint/
-├── Project1-LocalTestCaseGenerator/              # 🧪 AI Test Case Generator
+├── Project_01_LocalTestCaseGenerator/              # 🧪 AI Test Case Generator
 │   ├── backend/                                  #    FastAPI Backend
 │   ├── frontend/                                 #    Vanilla JS UI
 │   ├── tools/                                    #    Python Tools
 │   ├── architecture/                             #    System Architecture
 │   └── BLAST.md                                  #    B.L.A.S.T. Protocol
 │
-├── Project2-Selenium2PlaywrightLocalLLM/          # 🔄 Code Converter
+├── Project_02_Selenium2PlaywrightLocalLLM/          # 🔄 Code Converter
 │   ├── ui/                                       #    React Frontend
 │   ├── tools/                                    #    Utility Scripts
 │   ├── server.js                                 #    Express Proxy
 │   └── B.L.A.S.T.md                              #    B.L.A.S.T. Protocol
 │
-├── Project3-RICE_POT_PROMPT_SeleniumFrameowrk/    # 🏗️ Selenium Framework
+├── Project_03_RICE_POT_PROMPT_SeleniumFramework/    # 🏗️ Selenium Framework
 │   ├── src/main/java/                            #    Page Objects
 │   ├── src/test/java/                            #    Test Scripts
 │   ├── pom.xml                                   #    Maven Config
 │   └── testng.xml                                #    TestNG Suite
 │
-├── Project4-LocalLLM_PROMOT_TEMPLATE/             # 📝 Prompt Templates
+├── Project_04_LocalLLM_PROMPT_TEMPLATE/             # 📝 Prompt Templates
 │   ├── src/                                      #    Playwright Tests
 │   ├── context_project.md                        #    Project Context Template
 │   ├── context_constraints.md                    #    Constraints Template
 │   └── Task1_TC_PRD.md                           #    Test Case Output
 │
-├── Project5-ClaudeCodeJobAssitantBoard/           # 💼 Job Board Assistant
+├── Project_05_ClaudeCodeJobAssistantBoard/           # 💼 Job Board Assistant
 │   └── job-board-assistant/                      #    React + TypeScript App
 │       ├── src/                                  #    Components & Logic
 │       └── dist/                                 #    Production Build
 │
-├── Project6-ResumeFix_LinkedIn/                   # 📄 Resume Optimizer
+├── Project_06_ResumeFix_LinkedIn/                   # 📄 Resume Optimizer
 │   └── Resume_FIX/                               #    Resume Templates (DOCX/PDF)
 │
-├── Project7-TestPlan_AI_AGENT_JIRA/               # 🤖 AI Agent + JIRA
+├── Project_07_TestPlan_AI_AGENT_JIRA/               # 🤖 AI Agent + JIRA
 │   ├── intelligent-test-plan-agent/              #    Full-Stack Application
 │   │   ├── backend/                              #    Express + TypeScript API
 │   │   └── frontend/                             #    React + Vite + shadcn/ui
@@ -429,7 +429,7 @@ AITesterBlueprint/
 │   ├── findings.md                               #    Research & Discoveries
 │   └── progress.md                               #    Progress Tracking
 │
-├── Project8-n8n_Learning/                         # 🔗 n8n Workflows (Coming Soon)
+├── Project_08_n8n_Learning/                         # 🔗 n8n Workflows (Coming Soon)
 │
 └── README.md                                      # 📖 This File
 ```
