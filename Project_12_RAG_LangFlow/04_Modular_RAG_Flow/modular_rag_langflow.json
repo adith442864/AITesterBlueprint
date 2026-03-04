@@ -1,0 +1,278 @@
+{
+    "id": "modular-rag-router",
+    "data": {
+        "nodes": [
+            {
+                "id": "ChatInput-1",
+                "type": "genericNode",
+                "position": {
+                    "x": 100,
+                    "y": 400
+                },
+                "data": {
+                    "type": "ChatInput",
+                    "node": {
+                        "display_name": "Chat Input"
+                    }
+                }
+            },
+            {
+                "id": "RouterPrompt-1",
+                "type": "genericNode",
+                "position": {
+                    "x": 400,
+                    "y": 200
+                },
+                "data": {
+                    "type": "Prompt",
+                    "node": {
+                        "display_name": "Query Router Prompt",
+                        "template": {
+                            "template": {
+                                "type": "str",
+                                "value": "Classify this QA query into EXACTLY one category. Respond with only the category name.\n\nCategories:\n- api_testing\n- ui_testing\n- performance_testing\n\nQuery: {question}\n\nCategory:"
+                            }
+                        }
+                    }
+                }
+            },
+            {
+                "id": "RouterLLM-1",
+                "type": "genericNode",
+                "position": {
+                    "x": 700,
+                    "y": 200
+                },
+                "data": {
+                    "type": "ChatOpenAI",
+                    "node": {
+                        "display_name": "Router LLM (Classifier)",
+                        "template": {
+                            "model_name": {
+                                "type": "str",
+                                "value": "gpt-4o-mini"
+                            },
+                            "temperature": {
+                                "type": "float",
+                                "value": 0
+                            }
+                        }
+                    }
+                }
+            },
+            {
+                "id": "ConditionalRouter-1",
+                "type": "genericNode",
+                "position": {
+                    "x": 1000,
+                    "y": 200
+                },
+                "data": {
+                    "type": "ConditionalRouter",
+                    "node": {
+                        "display_name": "Conditional Router",
+                        "description": "Routes to API, UI, or Performance retriever based on classification",
+                        "template": {
+                            "conditions": {
+                                "type": "list",
+                                "value": [
+                                    {
+                                        "condition": "contains 'api'",
+                                        "target": "APIRetriever"
+                                    },
+                                    {
+                                        "condition": "contains 'ui'",
+                                        "target": "UIRetriever"
+                                    },
+                                    {
+                                        "condition": "default",
+                                        "target": "PerfRetriever"
+                                    }
+                                ]
+                            }
+                        }
+                    }
+                }
+            },
+            {
+                "id": "APIStore-1",
+                "type": "genericNode",
+                "position": {
+                    "x": 1300,
+                    "y": 100
+                },
+                "data": {
+                    "type": "Chroma",
+                    "node": {
+                        "display_name": "API Docs Vector Store",
+                        "template": {
+                            "collection_name": {
+                                "type": "str",
+                                "value": "api_docs"
+                            }
+                        }
+                    }
+                }
+            },
+            {
+                "id": "UIStore-1",
+                "type": "genericNode",
+                "position": {
+                    "x": 1300,
+                    "y": 300
+                },
+                "data": {
+                    "type": "Chroma",
+                    "node": {
+                        "display_name": "UI Docs Vector Store",
+                        "template": {
+                            "collection_name": {
+                                "type": "str",
+                                "value": "ui_docs"
+                            }
+                        }
+                    }
+                }
+            },
+            {
+                "id": "PerfStore-1",
+                "type": "genericNode",
+                "position": {
+                    "x": 1300,
+                    "y": 500
+                },
+                "data": {
+                    "type": "Chroma",
+                    "node": {
+                        "display_name": "Performance Docs Vector Store",
+                        "template": {
+                            "collection_name": {
+                                "type": "str",
+                                "value": "perf_docs"
+                            }
+                        }
+                    }
+                }
+            },
+            {
+                "id": "FinalPrompt-1",
+                "type": "genericNode",
+                "position": {
+                    "x": 1600,
+                    "y": 300
+                },
+                "data": {
+                    "type": "Prompt",
+                    "node": {
+                        "display_name": "Final RAG Prompt",
+                        "template": {
+                            "template": {
+                                "type": "str",
+                                "value": "You are a QA expert. Answer the question using the provided context.\n\nContext: {context}\n\nQuestion: {question}\n\nAnswer:"
+                            }
+                        }
+                    }
+                }
+            },
+            {
+                "id": "GeneratorLLM-1",
+                "type": "genericNode",
+                "position": {
+                    "x": 1900,
+                    "y": 300
+                },
+                "data": {
+                    "type": "ChatOpenAI",
+                    "node": {
+                        "display_name": "Generator LLM",
+                        "template": {
+                            "model_name": {
+                                "type": "str",
+                                "value": "gpt-4o-mini"
+                            },
+                            "temperature": {
+                                "type": "float",
+                                "value": 0
+                            }
+                        }
+                    }
+                }
+            },
+            {
+                "id": "ChatOutput-1",
+                "type": "genericNode",
+                "position": {
+                    "x": 2200,
+                    "y": 300
+                },
+                "data": {
+                    "type": "ChatOutput",
+                    "node": {
+                        "display_name": "Chat Output"
+                    }
+                }
+            }
+        ],
+        "edges": [
+            {
+                "source": "ChatInput-1",
+                "target": "RouterPrompt-1",
+                "targetHandle": "question"
+            },
+            {
+                "source": "RouterPrompt-1",
+                "target": "RouterLLM-1"
+            },
+            {
+                "source": "RouterLLM-1",
+                "target": "ConditionalRouter-1"
+            },
+            {
+                "source": "ConditionalRouter-1",
+                "target": "APIStore-1",
+                "sourceHandle": "api"
+            },
+            {
+                "source": "ConditionalRouter-1",
+                "target": "UIStore-1",
+                "sourceHandle": "ui"
+            },
+            {
+                "source": "ConditionalRouter-1",
+                "target": "PerfStore-1",
+                "sourceHandle": "default"
+            },
+            {
+                "source": "APIStore-1",
+                "target": "FinalPrompt-1",
+                "targetHandle": "context"
+            },
+            {
+                "source": "UIStore-1",
+                "target": "FinalPrompt-1",
+                "targetHandle": "context"
+            },
+            {
+                "source": "PerfStore-1",
+                "target": "FinalPrompt-1",
+                "targetHandle": "context"
+            },
+            {
+                "source": "ChatInput-1",
+                "target": "FinalPrompt-1",
+                "targetHandle": "question"
+            },
+            {
+                "source": "FinalPrompt-1",
+                "target": "GeneratorLLM-1"
+            },
+            {
+                "source": "GeneratorLLM-1",
+                "target": "ChatOutput-1"
+            }
+        ]
+    },
+    "description": "Modular RAG with LLM-based query router directing queries to domain-specific vector stores (API, UI, Performance)",
+    "name": "Modular RAG with Query Router",
+    "endpoint_name": "modular-rag"
+}

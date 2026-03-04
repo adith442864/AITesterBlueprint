@@ -1,0 +1,301 @@
+{
+    "id": "advanced-rag-reranking",
+    "data": {
+        "nodes": [
+            {
+                "id": "File-1",
+                "type": "genericNode",
+                "position": {
+                    "x": 100,
+                    "y": 200
+                },
+                "data": {
+                    "type": "File",
+                    "node": {
+                        "display_name": "File Loader",
+                        "description": "Load test documentation",
+                        "template": {
+                            "path": {
+                                "type": "file",
+                                "value": "",
+                                "display_name": "File Path"
+                            }
+                        }
+                    }
+                }
+            },
+            {
+                "id": "SemanticSplitter-1",
+                "type": "genericNode",
+                "position": {
+                    "x": 400,
+                    "y": 200
+                },
+                "data": {
+                    "type": "SemanticChunker",
+                    "node": {
+                        "display_name": "Semantic Text Splitter",
+                        "description": "Split documents based on semantic similarity boundaries",
+                        "template": {
+                            "breakpoint_threshold_type": {
+                                "type": "str",
+                                "value": "percentile",
+                                "display_name": "Breakpoint Type"
+                            },
+                            "breakpoint_threshold_amount": {
+                                "type": "float",
+                                "value": 95,
+                                "display_name": "Breakpoint Threshold"
+                            }
+                        }
+                    }
+                }
+            },
+            {
+                "id": "Embeddings-1",
+                "type": "genericNode",
+                "position": {
+                    "x": 400,
+                    "y": 400
+                },
+                "data": {
+                    "type": "OpenAIEmbeddings",
+                    "node": {
+                        "display_name": "OpenAI Embeddings",
+                        "template": {
+                            "model": {
+                                "type": "str",
+                                "value": "text-embedding-3-small"
+                            },
+                            "openai_api_key": {
+                                "type": "str",
+                                "value": "",
+                                "password": true
+                            }
+                        }
+                    }
+                }
+            },
+            {
+                "id": "VectorStore-1",
+                "type": "genericNode",
+                "position": {
+                    "x": 700,
+                    "y": 300
+                },
+                "data": {
+                    "type": "Chroma",
+                    "node": {
+                        "display_name": "Chroma Vector Store",
+                        "template": {
+                            "collection_name": {
+                                "type": "str",
+                                "value": "advanced_rag_collection"
+                            },
+                            "persist_directory": {
+                                "type": "str",
+                                "value": "./chroma_advanced_db"
+                            }
+                        }
+                    }
+                }
+            },
+            {
+                "id": "Retriever-1",
+                "type": "genericNode",
+                "position": {
+                    "x": 1000,
+                    "y": 200
+                },
+                "data": {
+                    "type": "Retriever",
+                    "node": {
+                        "display_name": "Over-fetch Retriever",
+                        "description": "Retrieve top-20 candidates for re-ranking",
+                        "template": {
+                            "search_kwargs": {
+                                "type": "dict",
+                                "value": {
+                                    "k": 20
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            {
+                "id": "Reranker-1",
+                "type": "genericNode",
+                "position": {
+                    "x": 1000,
+                    "y": 400
+                },
+                "data": {
+                    "type": "CohereRerank",
+                    "node": {
+                        "display_name": "Cohere Rerank",
+                        "description": "Re-rank 20 candidates down to top 4",
+                        "template": {
+                            "model": {
+                                "type": "str",
+                                "value": "rerank-english-v3.0"
+                            },
+                            "top_n": {
+                                "type": "int",
+                                "value": 4
+                            },
+                            "cohere_api_key": {
+                                "type": "str",
+                                "value": "",
+                                "password": true
+                            }
+                        }
+                    }
+                }
+            },
+            {
+                "id": "HyDE-Prompt",
+                "type": "genericNode",
+                "position": {
+                    "x": 700,
+                    "y": 600
+                },
+                "data": {
+                    "type": "Prompt",
+                    "node": {
+                        "display_name": "HyDE Prompt (Optional)",
+                        "description": "Generate hypothetical answer for better retrieval",
+                        "template": {
+                            "template": {
+                                "type": "str",
+                                "value": "Write a short passage that would answer this question: {question}"
+                            }
+                        }
+                    }
+                }
+            },
+            {
+                "id": "ChatInput-1",
+                "type": "genericNode",
+                "position": {
+                    "x": 700,
+                    "y": 800
+                },
+                "data": {
+                    "type": "ChatInput",
+                    "node": {
+                        "display_name": "Chat Input"
+                    }
+                }
+            },
+            {
+                "id": "Prompt-1",
+                "type": "genericNode",
+                "position": {
+                    "x": 1300,
+                    "y": 400
+                },
+                "data": {
+                    "type": "Prompt",
+                    "node": {
+                        "display_name": "RAG Prompt Template",
+                        "template": {
+                            "template": {
+                                "type": "str",
+                                "value": "Use ONLY the following context to answer.\n\nContext: {context}\n\nQuestion: {question}\n\nIf the answer is not in the context, say so.\n\nAnswer:"
+                            }
+                        }
+                    }
+                }
+            },
+            {
+                "id": "LLM-1",
+                "type": "genericNode",
+                "position": {
+                    "x": 1600,
+                    "y": 400
+                },
+                "data": {
+                    "type": "ChatOpenAI",
+                    "node": {
+                        "display_name": "ChatOpenAI",
+                        "template": {
+                            "model_name": {
+                                "type": "str",
+                                "value": "gpt-4o-mini"
+                            },
+                            "temperature": {
+                                "type": "float",
+                                "value": 0
+                            },
+                            "openai_api_key": {
+                                "type": "str",
+                                "value": "",
+                                "password": true
+                            }
+                        }
+                    }
+                }
+            },
+            {
+                "id": "ChatOutput-1",
+                "type": "genericNode",
+                "position": {
+                    "x": 1900,
+                    "y": 400
+                },
+                "data": {
+                    "type": "ChatOutput",
+                    "node": {
+                        "display_name": "Chat Output"
+                    }
+                }
+            }
+        ],
+        "edges": [
+            {
+                "source": "File-1",
+                "target": "SemanticSplitter-1"
+            },
+            {
+                "source": "SemanticSplitter-1",
+                "target": "VectorStore-1",
+                "targetHandle": "documents"
+            },
+            {
+                "source": "Embeddings-1",
+                "target": "VectorStore-1",
+                "targetHandle": "embeddings"
+            },
+            {
+                "source": "VectorStore-1",
+                "target": "Retriever-1"
+            },
+            {
+                "source": "Retriever-1",
+                "target": "Reranker-1"
+            },
+            {
+                "source": "Reranker-1",
+                "target": "Prompt-1",
+                "targetHandle": "context"
+            },
+            {
+                "source": "ChatInput-1",
+                "target": "Prompt-1",
+                "targetHandle": "question"
+            },
+            {
+                "source": "Prompt-1",
+                "target": "LLM-1"
+            },
+            {
+                "source": "LLM-1",
+                "target": "ChatOutput-1"
+            }
+        ]
+    },
+    "description": "Advanced RAG with Semantic Chunking, Over-fetch (k=20), Cohere Re-ranking (top_n=4), and optional HyDE query rewriting",
+    "name": "Advanced RAG with Reranking",
+    "endpoint_name": "advanced-rag"
+}

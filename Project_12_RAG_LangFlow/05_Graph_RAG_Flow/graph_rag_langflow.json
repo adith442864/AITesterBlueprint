@@ -1,0 +1,176 @@
+{
+    "id": "graph-rag-neo4j",
+    "data": {
+        "nodes": [
+            {
+                "id": "File-1",
+                "type": "genericNode",
+                "position": {
+                    "x": 100,
+                    "y": 200
+                },
+                "data": {
+                    "type": "File",
+                    "node": {
+                        "display_name": "File Loader",
+                        "description": "Load test documentation for graph construction"
+                    }
+                }
+            },
+            {
+                "id": "LLM-Extractor",
+                "type": "genericNode",
+                "position": {
+                    "x": 400,
+                    "y": 100
+                },
+                "data": {
+                    "type": "ChatOpenAI",
+                    "node": {
+                        "display_name": "GPT-4o (Entity Extractor)",
+                        "description": "LLM used for entity and relationship extraction",
+                        "template": {
+                            "model_name": {
+                                "type": "str",
+                                "value": "gpt-4o"
+                            },
+                            "temperature": {
+                                "type": "float",
+                                "value": 0
+                            }
+                        }
+                    }
+                }
+            },
+            {
+                "id": "GraphTransformer-1",
+                "type": "genericNode",
+                "position": {
+                    "x": 400,
+                    "y": 300
+                },
+                "data": {
+                    "type": "LLMGraphTransformer",
+                    "node": {
+                        "display_name": "LLM Graph Transformer",
+                        "description": "Extracts entities and relationships from documents using LLM"
+                    }
+                }
+            },
+            {
+                "id": "Neo4j-1",
+                "type": "genericNode",
+                "position": {
+                    "x": 700,
+                    "y": 300
+                },
+                "data": {
+                    "type": "Neo4jGraph",
+                    "node": {
+                        "display_name": "Neo4j Graph Database",
+                        "description": "Stores entities and relationships as a knowledge graph",
+                        "template": {
+                            "url": {
+                                "type": "str",
+                                "value": "bolt://localhost:7687",
+                                "display_name": "Neo4j URL"
+                            },
+                            "username": {
+                                "type": "str",
+                                "value": "neo4j",
+                                "display_name": "Username"
+                            },
+                            "password": {
+                                "type": "str",
+                                "value": "",
+                                "display_name": "Password",
+                                "password": true
+                            }
+                        }
+                    }
+                }
+            },
+            {
+                "id": "ChatInput-1",
+                "type": "genericNode",
+                "position": {
+                    "x": 700,
+                    "y": 500
+                },
+                "data": {
+                    "type": "ChatInput",
+                    "node": {
+                        "display_name": "Chat Input"
+                    }
+                }
+            },
+            {
+                "id": "GraphQA-1",
+                "type": "genericNode",
+                "position": {
+                    "x": 1000,
+                    "y": 400
+                },
+                "data": {
+                    "type": "GraphCypherQAChain",
+                    "node": {
+                        "display_name": "Graph Cypher QA Chain",
+                        "description": "Generates Cypher queries and traverses the knowledge graph"
+                    }
+                }
+            },
+            {
+                "id": "ChatOutput-1",
+                "type": "genericNode",
+                "position": {
+                    "x": 1300,
+                    "y": 400
+                },
+                "data": {
+                    "type": "ChatOutput",
+                    "node": {
+                        "display_name": "Chat Output"
+                    }
+                }
+            }
+        ],
+        "edges": [
+            {
+                "source": "File-1",
+                "target": "GraphTransformer-1",
+                "targetHandle": "documents"
+            },
+            {
+                "source": "LLM-Extractor",
+                "target": "GraphTransformer-1",
+                "targetHandle": "llm"
+            },
+            {
+                "source": "GraphTransformer-1",
+                "target": "Neo4j-1"
+            },
+            {
+                "source": "Neo4j-1",
+                "target": "GraphQA-1",
+                "targetHandle": "graph"
+            },
+            {
+                "source": "LLM-Extractor",
+                "target": "GraphQA-1",
+                "targetHandle": "llm"
+            },
+            {
+                "source": "ChatInput-1",
+                "target": "GraphQA-1",
+                "targetHandle": "query"
+            },
+            {
+                "source": "GraphQA-1",
+                "target": "ChatOutput-1"
+            }
+        ]
+    },
+    "description": "Graph RAG with Neo4j: Extract entities from docs, build knowledge graph, query via Cypher",
+    "name": "Graph RAG with Neo4j",
+    "endpoint_name": "graph-rag"
+}

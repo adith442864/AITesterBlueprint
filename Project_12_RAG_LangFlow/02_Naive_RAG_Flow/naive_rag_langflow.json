@@ -1,0 +1,287 @@
+{
+    "id": "naive-rag-pipeline",
+    "data": {
+        "nodes": [
+            {
+                "id": "File-1",
+                "type": "genericNode",
+                "position": {
+                    "x": 100,
+                    "y": 200
+                },
+                "data": {
+                    "type": "File",
+                    "node": {
+                        "display_name": "File Loader",
+                        "description": "Load documents (PDF, TXT, DOCX) for the RAG pipeline",
+                        "template": {
+                            "path": {
+                                "type": "file",
+                                "value": "",
+                                "display_name": "File Path"
+                            },
+                            "silent_errors": {
+                                "type": "bool",
+                                "value": false
+                            }
+                        }
+                    }
+                }
+            },
+            {
+                "id": "TextSplitter-1",
+                "type": "genericNode",
+                "position": {
+                    "x": 400,
+                    "y": 200
+                },
+                "data": {
+                    "type": "RecursiveCharacterTextSplitter",
+                    "node": {
+                        "display_name": "Recursive Character Text Splitter",
+                        "description": "Split documents into fixed-size chunks with overlap",
+                        "template": {
+                            "chunk_size": {
+                                "type": "int",
+                                "value": 1000,
+                                "display_name": "Chunk Size"
+                            },
+                            "chunk_overlap": {
+                                "type": "int",
+                                "value": 200,
+                                "display_name": "Chunk Overlap"
+                            },
+                            "separators": {
+                                "type": "list",
+                                "value": [
+                                    "\n\n",
+                                    "\n",
+                                    " ",
+                                    ""
+                                ],
+                                "display_name": "Separators"
+                            }
+                        }
+                    }
+                }
+            },
+            {
+                "id": "Embeddings-1",
+                "type": "genericNode",
+                "position": {
+                    "x": 400,
+                    "y": 400
+                },
+                "data": {
+                    "type": "OpenAIEmbeddings",
+                    "node": {
+                        "display_name": "OpenAI Embeddings",
+                        "description": "Convert text chunks into vector embeddings",
+                        "template": {
+                            "model": {
+                                "type": "str",
+                                "value": "text-embedding-3-small",
+                                "display_name": "Model"
+                            },
+                            "openai_api_key": {
+                                "type": "str",
+                                "value": "",
+                                "display_name": "OpenAI API Key",
+                                "password": true
+                            }
+                        }
+                    }
+                }
+            },
+            {
+                "id": "VectorStore-1",
+                "type": "genericNode",
+                "position": {
+                    "x": 700,
+                    "y": 300
+                },
+                "data": {
+                    "type": "Chroma",
+                    "node": {
+                        "display_name": "Chroma Vector Store",
+                        "description": "Store and retrieve document embeddings",
+                        "template": {
+                            "collection_name": {
+                                "type": "str",
+                                "value": "naive_rag_collection",
+                                "display_name": "Collection Name"
+                            },
+                            "persist_directory": {
+                                "type": "str",
+                                "value": "./chroma_db",
+                                "display_name": "Persist Directory"
+                            }
+                        }
+                    }
+                }
+            },
+            {
+                "id": "Retriever-1",
+                "type": "genericNode",
+                "position": {
+                    "x": 1000,
+                    "y": 300
+                },
+                "data": {
+                    "type": "Retriever",
+                    "node": {
+                        "display_name": "Vector Store Retriever",
+                        "description": "Retrieve top-k most similar chunks via cosine similarity",
+                        "template": {
+                            "search_kwargs": {
+                                "type": "dict",
+                                "value": {
+                                    "k": 4
+                                },
+                                "display_name": "Search Parameters"
+                            }
+                        }
+                    }
+                }
+            },
+            {
+                "id": "ChatInput-1",
+                "type": "genericNode",
+                "position": {
+                    "x": 700,
+                    "y": 500
+                },
+                "data": {
+                    "type": "ChatInput",
+                    "node": {
+                        "display_name": "Chat Input",
+                        "description": "Receives user query for the RAG pipeline"
+                    }
+                }
+            },
+            {
+                "id": "Prompt-1",
+                "type": "genericNode",
+                "position": {
+                    "x": 1000,
+                    "y": 500
+                },
+                "data": {
+                    "type": "Prompt",
+                    "node": {
+                        "display_name": "RAG Prompt Template",
+                        "description": "Template that combines retrieved context with user question",
+                        "template": {
+                            "template": {
+                                "type": "str",
+                                "value": "You are a helpful QA assistant. Answer the question based ONLY on the provided context. If the answer is not in the context, say 'I don't have enough information to answer this question.'\n\nContext:\n{context}\n\nQuestion: {question}\n\nAnswer:",
+                                "display_name": "Prompt Template"
+                            }
+                        }
+                    }
+                }
+            },
+            {
+                "id": "LLM-1",
+                "type": "genericNode",
+                "position": {
+                    "x": 1300,
+                    "y": 400
+                },
+                "data": {
+                    "type": "ChatOpenAI",
+                    "node": {
+                        "display_name": "ChatOpenAI",
+                        "description": "GPT-4o-mini for response generation",
+                        "template": {
+                            "model_name": {
+                                "type": "str",
+                                "value": "gpt-4o-mini",
+                                "display_name": "Model Name"
+                            },
+                            "temperature": {
+                                "type": "float",
+                                "value": 0,
+                                "display_name": "Temperature"
+                            },
+                            "openai_api_key": {
+                                "type": "str",
+                                "value": "",
+                                "display_name": "OpenAI API Key",
+                                "password": true
+                            }
+                        }
+                    }
+                }
+            },
+            {
+                "id": "ChatOutput-1",
+                "type": "genericNode",
+                "position": {
+                    "x": 1600,
+                    "y": 400
+                },
+                "data": {
+                    "type": "ChatOutput",
+                    "node": {
+                        "display_name": "Chat Output",
+                        "description": "Displays the generated response to the user"
+                    }
+                }
+            }
+        ],
+        "edges": [
+            {
+                "source": "File-1",
+                "target": "TextSplitter-1",
+                "sourceHandle": "output",
+                "targetHandle": "input"
+            },
+            {
+                "source": "TextSplitter-1",
+                "target": "VectorStore-1",
+                "sourceHandle": "output",
+                "targetHandle": "documents"
+            },
+            {
+                "source": "Embeddings-1",
+                "target": "VectorStore-1",
+                "sourceHandle": "output",
+                "targetHandle": "embeddings"
+            },
+            {
+                "source": "VectorStore-1",
+                "target": "Retriever-1",
+                "sourceHandle": "output",
+                "targetHandle": "vectorstore"
+            },
+            {
+                "source": "ChatInput-1",
+                "target": "Prompt-1",
+                "sourceHandle": "output",
+                "targetHandle": "question"
+            },
+            {
+                "source": "Retriever-1",
+                "target": "Prompt-1",
+                "sourceHandle": "output",
+                "targetHandle": "context"
+            },
+            {
+                "source": "Prompt-1",
+                "target": "LLM-1",
+                "sourceHandle": "output",
+                "targetHandle": "input"
+            },
+            {
+                "source": "LLM-1",
+                "target": "ChatOutput-1",
+                "sourceHandle": "output",
+                "targetHandle": "input"
+            }
+        ]
+    },
+    "description": "Naive RAG Pipeline - The simplest RAG implementation: Load → Chunk → Embed → Store → Retrieve → Generate",
+    "name": "Naive RAG Pipeline",
+    "endpoint_name": "naive-rag"
+}
