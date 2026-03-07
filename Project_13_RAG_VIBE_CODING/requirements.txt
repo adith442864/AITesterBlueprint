@@ -7,3 +7,4 @@ python-multipart
 PyPDF2
 pandas
 python-dotenv
+streamlit
