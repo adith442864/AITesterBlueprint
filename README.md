@@ -3,7 +3,7 @@
 <div align="center">
 
 ![AI Tester Blueprint](https://img.shields.io/badge/AI_Tester_Blueprint-Batch_Course-blueviolet?style=for-the-badge&logo=robot)
-![Projects](https://img.shields.io/badge/Projects-12-green?style=for-the-badge)
+![Projects](https://img.shields.io/badge/Projects-15-green?style=for-the-badge)
 ![Status](https://img.shields.io/badge/Status-Active-success?style=for-the-badge)
 ![Last Updated](https://img.shields.io/badge/Updated-March_2026-blue?style=for-the-badge)
 
@@ -21,7 +21,7 @@
 
 ## 📖 About This Course
 
-The **AI Tester Blueprint** is a project-based course designed to transform QA engineers into AI-powered testing professionals. Across **12 hands-on projects**, you'll progress from local LLM basics to building production-grade AI agents and robust document retrieval systems. Each project introduces new concepts in:
+The **AI Tester Blueprint** is a project-based course designed to transform QA engineers into AI-powered testing professionals. Across **15 hands-on projects**, you'll progress from local LLM basics to building production-grade AI agents and robust document retrieval systems. Each project introduces new concepts in:
 
 - 🧠 **Local LLM Integration** — Running AI models on your machine using Ollama
 - 🏗️ **Prompt Engineering** — Crafting effective prompts using RICE-POT & B.L.A.S.T. frameworks
@@ -218,7 +218,21 @@ ollama pull llama3.2
 
 ---
 
-### 🔹 Project 11: RAG Basics (The Complete Guide)
+### 🔹 Project 11: LangFlow Fundamentals
+
+> **LangFlow basics, starter QA agents, and beginner visual AI pipelines**
+
+| Aspect | Details |
+|--------|---------|
+| **Focus** | LangFlow Basics, Prompt Flows, QA Starter Agents |
+| **Tech Stack** | LangFlow, Groq, Prompt Templates, API Request |
+| **Key Concept** | Building simple visual AI flows before moving to RAG |
+
+📂 **[View Project Folder →](./Project_11_LangFlow/)**
+
+---
+
+### 🔹 Project 12: RAG Basics (The Complete Guide)
 
 > **Understanding and implementing all 10 types of Retrieval-Augmented Generation**
 
@@ -228,21 +242,49 @@ ollama pull llama3.2
 | **Tech Stack** | Python, LangChain, Markdown |
 | **Key Concept** | Grounding AI responses in company documents |
 
-📂 **[View Project Folder →](./Project_11_RAG_Basics/)**
+📂 **[View Project Folder →](./Project_12_RAG_Basics/)**
 
 ---
 
-### 🔹 Project 12: RAG with LangFlow & n8n
+### 🔹 Project 13: RAG with LangFlow
 
 > **Visual implementations of RAG pipelines for test case generation**
 
 | Aspect | Details |
 |--------|---------|
 | **Focus** | Low-code AI, Visual Node Programming |
-| **Tech Stack** | LangFlow, n8n, AstraDB, Groq |
+| **Tech Stack** | LangFlow, AstraDB, Groq, Chroma |
 | **Key Concept** | Drag-and-drop RAG pipeline engineering |
 
-📂 **[View Project Folder →](./Project_12_RAG_LangFlow/)**
+📂 **[View Project Folder →](./Project_13_RAG_with_LangFlow/)**
+
+---
+
+### 🔹 Project 14: RAG VIBE Coding App
+
+> **A modular RAG application with upload, routing, ingestion, and chat interfaces**
+
+| Aspect | Details |
+|--------|---------|
+| **Focus** | Full-stack RAG Application, Modular Retrieval |
+| **Tech Stack** | FastAPI, ChromaDB, Python, Static HTML UI |
+| **Key Concept** | Domain-routed document ingestion and answer generation |
+
+📂 **[View Project Folder →](./Project_14_RAG_VIBE_CODING/)**
+
+---
+
+### 🔹 Project 15: Vector Embeddings Visualizer
+
+> **Interactive chunking and embeddings playground for teaching vector search concepts**
+
+| Aspect | Details |
+|--------|---------|
+| **Focus** | Embeddings, Chunking, Similarity, RAG Foundations |
+| **Tech Stack** | FastAPI, Vanilla HTML/CSS/JS, Ollama/OpenAI/Mistral |
+| **Key Concept** | Turning text into chunks, vectors, and a visible teaching-friendly map |
+
+📂 **[View Project Folder →](./Project_15_Vector_Embeddings_Visualizer/)**
 
 ---
 
@@ -292,10 +334,13 @@ graph TD
         D1[Project 8: n8n AI Workflows] --> D2[Project 9: Content Creator]
     end
     
-    D --> E[Phase 4: Advanced RAG]
-    
+    D --> E[Phase 4: Retrieval Foundations]
+
     subgraph "Phase 4: Retrieval-Augmented Generation"
-        E1[Project 11: RAG Basics] --> E2[Project 12: LangFlow RAG]
+        E0[Project 11: LangFlow Fundamentals] --> E1[Project 12: RAG Basics]
+        E1 --> E2[Project 13: LangFlow RAG]
+        E2 --> E3[Project 14: RAG App]
+        E3 --> E4[Project 15: Embeddings Visualizer]
     end
     
     E --> F[Phase 5: Capstone]
@@ -323,8 +368,11 @@ AITesterBlueprint/
 ├── Project_08_n8n_Learning/                         # 🔗 n8n AI Workflows 
 ├── Project_09_Content-Creation-n8n/                 # 🗓️ Automated generic tasks scheduler
 ├── Project_10_BugSnap-BugReportEnhancer/            # 📸 Tool to easily annotate bugs
-├── Project_11_RAG_Basics/                           # 📚 Theory and definitions for 10 RAG architectures
-├── Project_12_RAG_LangFlow/                         # 🧩 Visual component pipelines for RAG
+├── Project_11_LangFlow/                            # 🧩 LangFlow fundamentals and QA starter agents
+├── Project_12_RAG_Basics/                          # 📚 Theory and definitions for 10 RAG architectures
+├── Project_13_RAG_with_LangFlow/                   # 🔗 Visual RAG pipelines with LangFlow
+├── Project_14_RAG_VIBE_CODING/                     # 🧠 Full-stack modular RAG app
+├── Project_15_Vector_Embeddings_Visualizer/        # 📐 Embeddings + chunking visualizer
 └── README.md                                      # 📖 This File
 ```
 
