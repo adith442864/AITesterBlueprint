@@ -1,14 +1,19 @@
 <!DOCTYPE html>
 <html lang="en" data-theme="light">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>AI Tester Blueprint | Course Docs</title>
-  <meta name="description" content="Docs-style course overview for AI Tester Blueprint Projects 1 to 15, using a Mintlify-inspired navigation shell and repo-based project content.">
-  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='16' fill='%2316a34a'/%3E%3Cpath d='M18 20h28v8H18zm0 16h20v8H18z' fill='white'/%3E%3C/svg%3E">
+  <meta name="description"
+    content="Docs-style course overview for AI Tester Blueprint Projects 1 to 15, using a Mintlify-inspired navigation shell and repo-based project content.">
+  <link rel="icon"
+    href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='16' fill='%2316a34a'/%3E%3Cpath d='M18 20h28v8H18zm0 16h20v8H18z' fill='white'/%3E%3C/svg%3E">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap"
+    rel="stylesheet">
   <style>
     :root {
       --font: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
@@ -38,7 +43,7 @@
       --accent-soft: #f0fdf4;
       --accent-border: #bbf7d0;
       --accent-text: #166534;
-      --nav-bg: rgba(255,255,255,0.94);
+      --nav-bg: rgba(255, 255, 255, 0.94);
       --code-bg: #18181b;
       --code-text: #f4f4f5;
       --warning-bg: #fff7ed;
@@ -62,7 +67,7 @@
       --accent-soft: #052e16;
       --accent-border: #14532d;
       --accent-text: #4ade80;
-      --nav-bg: rgba(15,15,15,0.94);
+      --nav-bg: rgba(15, 15, 15, 0.94);
       --code-bg: #09090b;
       --code-text: #f4f4f5;
       --warning-bg: #431407;
@@ -70,8 +75,15 @@
       color-scheme: dark;
     }
 
-    * { box-sizing: border-box; }
-    html { scroll-behavior: smooth; scrollbar-gutter: stable; }
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+      scrollbar-gutter: stable;
+    }
+
     body {
       margin: 0;
       font-family: var(--font);
@@ -82,7 +94,12 @@
       -webkit-font-smoothing: antialiased;
       overflow-x: hidden;
     }
-    a { color: inherit; text-decoration: none; }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
     code {
       font-family: var(--mono);
       font-size: 12px;
@@ -92,6 +109,7 @@
       padding: 1px 5px;
       color: var(--accent-text);
     }
+
     pre {
       margin: 0;
       padding: 18px;
@@ -118,6 +136,7 @@
       backdrop-filter: blur(12px);
       z-index: 300;
     }
+
     .brand-block {
       width: var(--sidebar-w);
       min-width: var(--sidebar-w);
@@ -129,6 +148,7 @@
       border-right: 1px solid var(--line);
       flex-shrink: 0;
     }
+
     .brand-mark {
       width: 28px;
       height: 28px;
@@ -141,16 +161,19 @@
       font-weight: 800;
       flex-shrink: 0;
     }
+
     .brand-copy strong {
       display: block;
       font-size: 15px;
       letter-spacing: -0.02em;
     }
+
     .brand-copy span {
       display: block;
       font-size: 12px;
       color: var(--text-3);
     }
+
     .nav-center {
       display: flex;
       align-items: center;
@@ -159,6 +182,7 @@
       flex: 1;
       overflow-x: auto;
     }
+
     .nav-top-link {
       padding: 6px 10px;
       border-radius: var(--radius-sm);
@@ -167,10 +191,12 @@
       white-space: nowrap;
       transition: color var(--transition), background var(--transition);
     }
+
     .nav-top-link:hover {
       color: var(--text-2);
       background: var(--bg-1);
     }
+
     .nav-right {
       display: flex;
       align-items: center;
@@ -178,6 +204,7 @@
       padding: 0 18px;
       flex-shrink: 0;
     }
+
     .ghost-btn,
     .theme-btn,
     .menu-btn {
@@ -191,6 +218,7 @@
       font-family: var(--font);
       font-size: 13px;
     }
+
     .ghost-btn:hover,
     .theme-btn:hover,
     .menu-btn:hover {
@@ -198,13 +226,17 @@
       border-color: var(--line-2);
       background: var(--bg-1);
     }
-    .menu-btn { display: none; }
+
+    .menu-btn {
+      display: none;
+    }
 
     .shell {
       display: flex;
       min-height: 100vh;
       padding-top: var(--nav-h);
     }
+
     .sidebar {
       width: var(--sidebar-w);
       min-width: var(--sidebar-w);
@@ -218,7 +250,11 @@
       padding-bottom: 24px;
       z-index: 120;
     }
-    .sidebar::-webkit-scrollbar { width: 0; }
+
+    .sidebar::-webkit-scrollbar {
+      width: 0;
+    }
+
     .sb-search-wrap {
       position: sticky;
       top: 0;
@@ -226,6 +262,7 @@
       padding: 12px 10px 6px;
       z-index: 2;
     }
+
     .sb-search {
       display: flex;
       align-items: center;
@@ -235,6 +272,7 @@
       border: 1px solid var(--line);
       border-radius: var(--radius-sm);
     }
+
     .sb-search input {
       border: none;
       outline: none;
@@ -243,6 +281,7 @@
       width: 100%;
       font-size: 13px;
     }
+
     .sb-search kbd {
       font-family: var(--mono);
       font-size: 10px;
@@ -252,7 +291,11 @@
       border-radius: 3px;
       padding: 1px 4px;
     }
-    .sb-group { margin-top: 16px; }
+
+    .sb-group {
+      margin-top: 16px;
+    }
+
     .sb-label {
       padding: 3px 16px 6px;
       font-size: 12px;
@@ -260,6 +303,7 @@
       color: var(--text-3);
       letter-spacing: 0.02em;
     }
+
     .nav-item {
       display: flex;
       align-items: center;
@@ -271,15 +315,18 @@
       font-size: 13.5px;
       transition: color var(--transition), background var(--transition);
     }
+
     .nav-item:hover {
       color: var(--text-2);
       background: var(--bg-1);
     }
+
     .nav-item.active {
       color: var(--accent-text);
       background: var(--accent-soft);
       font-weight: 600;
     }
+
     .nav-badge {
       margin-left: auto;
       font-size: 10px;
@@ -289,6 +336,7 @@
       color: var(--text-4);
       border: 1px solid var(--line);
     }
+
     .sb-bottom {
       margin-top: 18px;
       padding: 12px 14px 0;
@@ -302,6 +350,7 @@
       width: calc(100% - var(--sidebar-w));
       padding: 28px 32px 56px;
     }
+
     .content-wrap {
       max-width: 1060px;
       margin: 0 auto;
@@ -311,6 +360,7 @@
       padding: 8px 0 28px;
       border-bottom: 1px solid var(--line);
     }
+
     .eyebrow {
       display: inline-flex;
       align-items: center;
@@ -325,28 +375,33 @@
       letter-spacing: 0.04em;
       text-transform: uppercase;
     }
+
     h1 {
       margin: 16px 0 10px;
       font-size: clamp(36px, 5vw, 58px);
       line-height: 1.02;
       letter-spacing: -0.05em;
     }
+
     h2 {
       margin: 0 0 10px;
       font-size: 30px;
       letter-spacing: -0.04em;
       line-height: 1.15;
     }
+
     h3 {
       margin: 0 0 8px;
       font-size: 18px;
       letter-spacing: -0.02em;
       line-height: 1.2;
     }
+
     p {
       margin: 0;
       color: var(--text-2);
     }
+
     .hero p {
       max-width: 820px;
       font-size: 16px;
@@ -364,12 +419,34 @@
       display: grid;
       gap: 16px;
     }
-    .hero-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); margin-top: 24px; }
-    .stats-grid { grid-template-columns: repeat(4, minmax(0, 1fr)); margin-top: 24px; }
-    .phase-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
-    .cards-2, .files-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-    .cards-3, .project-facts { grid-template-columns: repeat(3, minmax(0, 1fr)); }
-    .projects-shell { margin-top: 36px; }
+
+    .hero-grid {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      margin-top: 24px;
+    }
+
+    .stats-grid {
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      margin-top: 24px;
+    }
+
+    .phase-grid {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+
+    .cards-2,
+    .files-grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .cards-3,
+    .project-facts {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+
+    .projects-shell {
+      margin-top: 36px;
+    }
 
     .card,
     .metric,
@@ -382,12 +459,15 @@
       border-radius: 12px;
       box-shadow: var(--shadow);
     }
+
     .card,
     .metric,
     .project-section,
     .fact,
     .file-card,
-    .callout { padding: 18px; }
+    .callout {
+      padding: 18px;
+    }
 
     .card:hover,
     .file-card:hover {
@@ -401,16 +481,19 @@
       letter-spacing: -0.04em;
       color: var(--text);
     }
+
     .metric span {
       color: var(--text-3);
       font-size: 13px;
     }
+
     .tag-row {
       display: flex;
       flex-wrap: wrap;
       gap: 8px;
       margin-top: 12px;
     }
+
     .tag {
       display: inline-flex;
       align-items: center;
@@ -422,11 +505,13 @@
       font-size: 11px;
       font-weight: 700;
     }
+
     .section {
       padding: 38px 0;
       border-bottom: 1px solid var(--line);
       scroll-margin-top: calc(var(--nav-h) + 18px);
     }
+
     .section-head {
       display: flex;
       align-items: flex-start;
@@ -435,6 +520,7 @@
       flex-wrap: wrap;
       margin-bottom: 18px;
     }
+
     .section-kicker {
       display: inline-block;
       margin-bottom: 8px;
@@ -444,6 +530,7 @@
       letter-spacing: 0.08em;
       text-transform: uppercase;
     }
+
     .phase-chip,
     .project-id {
       display: inline-flex;
@@ -456,21 +543,31 @@
       font-size: 12px;
       font-weight: 700;
     }
+
     .list {
       margin: 0;
       padding-left: 18px;
       color: var(--text-2);
     }
-    .list li + li { margin-top: 7px; }
+
+    .list li+li {
+      margin-top: 7px;
+    }
+
     .callout.warning {
       background: linear-gradient(180deg, var(--warning-bg), var(--panel));
       color: var(--warning-text);
     }
+
     .callout.warning p,
-    .callout.warning li { color: var(--warning-text); }
+    .callout.warning li {
+      color: var(--warning-text);
+    }
+
     .project-section h2 {
       margin-bottom: 8px;
     }
+
     .project-meta {
       display: flex;
       align-items: center;
@@ -479,12 +576,17 @@
       flex-wrap: wrap;
       margin-bottom: 14px;
     }
+
     .project-id {
       background: var(--accent-soft);
       border-color: var(--accent-border);
       color: var(--accent-text);
     }
-    .files-grid { margin-top: 16px; }
+
+    .files-grid {
+      margin-top: 16px;
+    }
+
     .file-card small {
       display: block;
       margin-top: 9px;
@@ -493,12 +595,14 @@
       font-size: 11px;
       word-break: break-all;
     }
+
     .actions {
       display: flex;
       flex-wrap: wrap;
       gap: 10px;
       margin-top: 18px;
     }
+
     .btn {
       display: inline-flex;
       align-items: center;
@@ -509,66 +613,107 @@
       font-weight: 700;
       transition: all var(--transition);
     }
+
     .btn.primary {
       background: var(--accent);
       color: #fff;
       border: 1px solid var(--accent);
     }
-    .btn.primary:hover { background: var(--accent-hover); }
+
+    .btn.primary:hover {
+      background: var(--accent-hover);
+    }
+
     .btn.secondary {
       border: 1px solid var(--line);
       color: var(--text-2);
       background: transparent;
     }
+
     .btn.secondary:hover {
       background: var(--bg-1);
       border-color: var(--line-2);
     }
+
     .footer-note {
       padding: 26px 0 12px;
       color: var(--text-3);
       font-size: 14px;
     }
-    .hidden { display: none !important; }
+
+    .hidden {
+      display: none !important;
+    }
 
     @media (max-width: 1100px) {
+
       .hero-grid,
       .phase-grid,
       .project-facts,
       .cards-3,
-      .stats-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .stats-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
     }
 
     @media (max-width: 920px) {
-      .menu-btn { display: inline-flex; }
-      .brand-block { width: auto; min-width: 0; border-right: none; }
+      .menu-btn {
+        display: inline-flex;
+      }
+
+      .brand-block {
+        width: auto;
+        min-width: 0;
+        border-right: none;
+      }
+
       .sidebar {
         transform: translateX(-100%);
         transition: transform var(--transition);
       }
-      .sidebar.open { transform: translateX(0); }
+
+      .sidebar.open {
+        transform: translateX(0);
+      }
+
       .content {
         margin-left: 0;
         width: 100%;
         padding: 24px 18px 48px;
       }
-      .nav-center { display: none; }
+
+      .nav-center {
+        display: none;
+      }
     }
 
     @media (max-width: 700px) {
+
       .hero-grid,
       .stats-grid,
       .phase-grid,
       .cards-2,
       .cards-3,
       .files-grid,
-      .project-facts { grid-template-columns: 1fr; }
-      h1 { font-size: 40px; }
-      h2 { font-size: 26px; }
-      .nav-right .ghost-btn:first-child { display: none; }
+      .project-facts {
+        grid-template-columns: 1fr;
+      }
+
+      h1 {
+        font-size: 40px;
+      }
+
+      h2 {
+        font-size: 26px;
+      }
+
+      .nav-right .ghost-btn:first-child {
+        display: none;
+      }
     }
   </style>
 </head>
+
 <body>
   <header class="topbar">
     <div class="brand-block">
@@ -596,7 +741,8 @@
     <aside class="sidebar" id="sidebar">
       <div class="sb-search-wrap">
         <label class="sb-search">
-          <input id="sidebarSearch" type="text" placeholder="Search projects or phases..." aria-label="Search projects or phases">
+          <input id="sidebarSearch" type="text" placeholder="Search projects or phases..."
+            aria-label="Search projects or phases">
           <kbd>/</kbd>
         </label>
       </div>
@@ -636,7 +782,8 @@
       </div>
 
       <div class="sb-bottom">
-        Hosted docs shell inspired by your sample HTML. Repo content is sourced from AI Tester Blueprint, not copied from the sample page.
+        Hosted docs shell inspired by your sample HTML. Repo content is sourced from AI Tester Blueprint, not copied
+        from the sample page.
       </div>
     </aside>
 
@@ -645,28 +792,36 @@
         <section class="hero section" id="overview">
           <span class="eyebrow">Course Documentation View</span>
           <h1>Projects 1 to 15 in a docs-style teaching format</h1>
-          <p>This page replaces the previous flat presentation layout with a Mintlify-style documentation shell: fixed top navigation, searchable left sidebar, Inter typography, green accent styling, and project sections built from your repository. The structure follows your course, not the sample RAG page content.</p>
+          <p>This page replaces the previous flat presentation layout with a Mintlify-style documentation shell: fixed
+            top navigation, searchable left sidebar, Inter typography, green accent styling, and project sections built
+            from your repository. The structure follows your course, not the sample RAG page content.</p>
 
           <div class="hero-grid">
             <div class="card">
               <h3>15 Projects</h3>
-              <p>From local LLM tools and prompt engineering to LangFlow, RAG systems, and vector embedding visualization.</p>
+              <p>From local LLM tools and prompt engineering to LangFlow, RAG systems, and vector embedding
+                visualization.</p>
             </div>
             <div class="card">
               <h3>Teacher-friendly</h3>
-              <p>Every project has a short objective, a focus summary, a stack snapshot, and quick file links for live demos.</p>
+              <p>Every project has a short objective, a focus summary, a stack snapshot, and quick file links for live
+                demos.</p>
             </div>
             <div class="card">
               <h3>Repo-backed</h3>
-              <p>The content comes from your README structure and current project folders. The sample only influenced the layout system.</p>
+              <p>The content comes from your README structure and current project folders. The sample only influenced
+                the layout system.</p>
             </div>
           </div>
 
           <div class="stats-grid">
             <div class="metric"><strong>5</strong><span>teaching phases</span></div>
-            <div class="metric"><strong>Local + Cloud</strong><span>mixed delivery across Ollama, Groq, OpenAI, and no-code tools</span></div>
-            <div class="metric"><strong>Prompt to Product</strong><span>progression from prompt design to deployable apps</span></div>
-            <div class="metric"><strong>HTML Docs</strong><span>designed to be hosted, navigated, and taught from directly</span></div>
+            <div class="metric"><strong>Local + Cloud</strong><span>mixed delivery across Ollama, Groq, OpenAI, and
+                no-code tools</span></div>
+            <div class="metric"><strong>Prompt to Product</strong><span>progression from prompt design to deployable
+                apps</span></div>
+            <div class="metric"><strong>HTML Docs</strong><span>designed to be hosted, navigated, and taught from
+                directly</span></div>
           </div>
 
           <div class="actions">
@@ -681,24 +836,31 @@
             <div>
               <span class="section-kicker">Course structure</span>
               <h2>How the course is grouped</h2>
-              <p>The course becomes easier to teach when projects are grouped by why they exist, not just by numbering. The five phases below are directly aligned with the progression already visible in the repository.</p>
+              <p>The course becomes easier to teach when projects are grouped by why they exist, not just by numbering.
+                The five phases below are directly aligned with the progression already visible in the repository.</p>
             </div>
           </div>
           <div class="phase-grid">
             <div class="card">
               <h3>Phase 1: Local AI and Prompting</h3>
-              <p>Projects 1 to 4 establish private local LLM workflows, prompt frameworks, and reusable prompt assets.</p>
-              <div class="tag-row"><span class="tag">Projects 1-4</span><span class="tag">Ollama</span><span class="tag">Prompting</span></div>
+              <p>Projects 1 to 4 establish private local LLM workflows, prompt frameworks, and reusable prompt assets.
+              </p>
+              <div class="tag-row"><span class="tag">Projects 1-4</span><span class="tag">Ollama</span><span
+                  class="tag">Prompting</span></div>
             </div>
             <div class="card">
               <h3>Phase 2: Apps, Agents, and Automation</h3>
-              <p>Projects 5 to 10 move into product-like UI, JIRA agents, no-code automation, and AI-assisted workflows.</p>
-              <div class="tag-row"><span class="tag">Projects 5-10</span><span class="tag">Apps</span><span class="tag">n8n</span></div>
+              <p>Projects 5 to 10 move into product-like UI, JIRA agents, no-code automation, and AI-assisted workflows.
+              </p>
+              <div class="tag-row"><span class="tag">Projects 5-10</span><span class="tag">Apps</span><span
+                  class="tag">n8n</span></div>
             </div>
             <div class="card">
               <h3>Phase 3: LangFlow and Retrieval Systems</h3>
-              <p>Projects 11 to 15 cover LangFlow basics, RAG theory, visual flow engineering, modular RAG apps, and embeddings.</p>
-              <div class="tag-row"><span class="tag">Projects 11-15</span><span class="tag">LangFlow</span><span class="tag">RAG</span></div>
+              <p>Projects 11 to 15 cover LangFlow basics, RAG theory, visual flow engineering, modular RAG apps, and
+                embeddings.</p>
+              <div class="tag-row"><span class="tag">Projects 11-15</span><span class="tag">LangFlow</span><span
+                  class="tag">RAG</span></div>
             </div>
           </div>
         </section>
@@ -708,21 +870,25 @@
             <div>
               <span class="section-kicker">Teaching path</span>
               <h2>A simple way to present the full course</h2>
-              <p>If students get lost, come back to this route. It keeps the course from feeling like disconnected demos.</p>
+              <p>If students get lost, come back to this route. It keeps the course from feeling like disconnected
+                demos.</p>
             </div>
           </div>
           <div class="cards-3">
             <div class="callout">
               <h3>1. Start with control</h3>
-              <p>Projects 1 to 4 show how to control prompt behavior, model behavior, and input structure before introducing more moving parts.</p>
+              <p>Projects 1 to 4 show how to control prompt behavior, model behavior, and input structure before
+                introducing more moving parts.</p>
             </div>
             <div class="callout">
               <h3>2. Move to useful systems</h3>
-              <p>Projects 5 to 10 turn AI into visible workflow value: apps, agents, JIRA integration, and content or bug workflows.</p>
+              <p>Projects 5 to 10 turn AI into visible workflow value: apps, agents, JIRA integration, and content or
+                bug workflows.</p>
             </div>
             <div class="callout">
               <h3>3. Finish with retrieval</h3>
-              <p>Projects 11 to 15 close the loop by moving from LangFlow fundamentals to retrieval theory, flow engineering, product code, and embeddings.</p>
+              <p>Projects 11 to 15 close the loop by moving from LangFlow fundamentals to retrieval theory, flow
+                engineering, product code, and embeddings.</p>
             </div>
           </div>
         </section>
@@ -731,7 +897,9 @@
         <div class="projects-shell" id="projectsContainer"></div>
 
         <div class="footer-note">
-          This page now uses the sample only as a design reference: menu structure, side panel, docs styling, typography, and overall interaction model. The project summaries themselves are from your AI Tester Blueprint repository and the current folder mapping.
+          This page now uses the sample only as a design reference: menu structure, side panel, docs styling,
+          typography, and overall interaction model. The project summaries themselves are from your AI Tester Blueprint
+          repository and the current folder mapping.
         </div>
       </div>
     </main>
@@ -1154,4 +1322,5 @@
     sections.forEach((section) => observer.observe(section));
   </script>
 </body>
+
 </html>
