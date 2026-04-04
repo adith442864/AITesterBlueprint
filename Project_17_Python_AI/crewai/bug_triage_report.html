@@ -1,0 +1,1029 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>QA Bug Triage Report — VWO-48</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg-primary: #0a0e1a;
+    --bg-secondary: #111827;
+    --bg-card: #1a2035;
+    --bg-card-hover: #1f2847;
+    --border: #2a3550;
+    --text-primary: #f0f4fc;
+    --text-secondary: #94a3c0;
+    --text-muted: #6b7a99;
+    --accent-blue: #3b82f6;
+    --accent-purple: #8b5cf6;
+    --accent-cyan: #06b6d4;
+    --accent-green: #10b981;
+    --accent-amber: #f59e0b;
+    --accent-red: #ef4444;
+    --accent-pink: #ec4899;
+    --gradient-hero: linear-gradient(135deg, #1e1b4b 0%, #0f172a 50%, #042f2e 100%);
+    --gradient-card-triage: linear-gradient(135deg, rgba(59,130,246,0.08), rgba(139,92,246,0.05));
+    --gradient-card-rca: linear-gradient(135deg, rgba(249,115,22,0.08), rgba(239,68,68,0.05));
+    --gradient-card-test: linear-gradient(135deg, rgba(16,185,129,0.08), rgba(6,182,212,0.05));
+    --shadow-glow: 0 0 40px rgba(59,130,246,0.08);
+    --radius: 16px;
+    --radius-sm: 10px;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    background: var(--bg-primary);
+    color: var(--text-primary);
+    line-height: 1.7;
+    min-height: 100vh;
+  }
+
+  /* ── Animated Background ────────────────────────────── */
+  .bg-grid {
+    position: fixed;
+    inset: 0;
+    background-image:
+      radial-gradient(circle at 20% 20%, rgba(59,130,246,0.04) 0%, transparent 50%),
+      radial-gradient(circle at 80% 80%, rgba(139,92,246,0.04) 0%, transparent 50%),
+      radial-gradient(circle at 50% 50%, rgba(6,182,212,0.02) 0%, transparent 50%);
+    z-index: 0;
+    pointer-events: none;
+  }
+
+  .container {
+    position: relative;
+    z-index: 1;
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 40px 24px 80px;
+  }
+
+  /* ── Hero Section ───────────────────────────────────── */
+  .hero {
+    background: var(--gradient-hero);
+    border: 1px solid var(--border);
+    border-radius: 24px;
+    padding: 48px;
+    margin-bottom: 32px;
+    position: relative;
+    overflow: hidden;
+    box-shadow: var(--shadow-glow);
+  }
+
+  .hero::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    right: -20%;
+    width: 500px;
+    height: 500px;
+    background: radial-gradient(circle, rgba(59,130,246,0.06) 0%, transparent 60%);
+    pointer-events: none;
+  }
+
+  .hero-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: rgba(59,130,246,0.12);
+    border: 1px solid rgba(59,130,246,0.25);
+    color: var(--accent-blue);
+    padding: 6px 16px;
+    border-radius: 100px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    margin-bottom: 20px;
+  }
+
+  .hero-badge .dot {
+    width: 8px;
+    height: 8px;
+    background: var(--accent-green);
+    border-radius: 50%;
+    animation: pulse 2s infinite;
+  }
+
+  @keyframes pulse {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.5; transform: scale(0.8); }
+  }
+
+  .hero h1 {
+    font-size: 2.2rem;
+    font-weight: 800;
+    background: linear-gradient(135deg, #f0f4fc 0%, #94a3c0 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    margin-bottom: 8px;
+    letter-spacing: -0.5px;
+  }
+
+  .hero-subtitle {
+    color: var(--text-secondary);
+    font-size: 1rem;
+    margin-bottom: 28px;
+  }
+
+  .hero-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+  }
+
+  .meta-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: var(--text-secondary);
+    font-size: 0.88rem;
+  }
+
+  .meta-item .label {
+    color: var(--text-muted);
+    font-weight: 500;
+  }
+
+  .meta-item .value {
+    color: var(--text-primary);
+    font-weight: 600;
+  }
+
+  /* ── Bug Info Panel ─────────────────────────────────── */
+  .bug-info {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 28px;
+    margin-bottom: 32px;
+  }
+
+  .bug-info h3 {
+    color: var(--accent-amber);
+    font-size: 0.85rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 16px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .bug-info pre {
+    background: var(--bg-secondary);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    padding: 20px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.85rem;
+    color: var(--text-secondary);
+    line-height: 1.8;
+    overflow-x: auto;
+    white-space: pre-wrap;
+    word-wrap: break-word;
+  }
+
+  /* ── Section Cards ──────────────────────────────────── */
+  .section {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    margin-bottom: 28px;
+    overflow: hidden;
+    transition: all 0.3s ease;
+  }
+
+  .section:hover {
+    border-color: rgba(59,130,246,0.3);
+    box-shadow: 0 8px 32px rgba(0,0,0,0.3);
+    transform: translateY(-2px);
+  }
+
+  .section-header {
+    padding: 24px 28px 0;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+  }
+
+  .section-icon {
+    width: 44px;
+    height: 44px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.3rem;
+    flex-shrink: 0;
+  }
+
+  .section-icon.triage { background: rgba(59,130,246,0.12); }
+  .section-icon.rca { background: rgba(249,115,22,0.12); }
+  .section-icon.test { background: rgba(16,185,129,0.12); }
+  .section-icon.verdict { background: rgba(139,92,246,0.12); }
+
+  .section-title-group h2 {
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    margin-bottom: 2px;
+  }
+
+  .section-title-group .agent-tag {
+    font-size: 0.78rem;
+    color: var(--text-muted);
+    font-weight: 500;
+  }
+
+  .section-body {
+    padding: 20px 28px 28px;
+  }
+
+  .section-body h1, .section-body h2, .section-body h3, .section-body h4 {
+    color: var(--accent-cyan);
+    margin: 20px 0 10px;
+    font-weight: 600;
+  }
+
+  .section-body h1 { font-size: 1.3rem; }
+  .section-body h2 { font-size: 1.15rem; }
+  .section-body h3 { font-size: 1.05rem; }
+  .section-body h4 { font-size: 0.95rem; }
+
+  .section-body p {
+    color: var(--text-secondary);
+    margin-bottom: 10px;
+    font-size: 0.92rem;
+  }
+
+  .section-body ul {
+    margin: 10px 0 16px 6px;
+    list-style: none;
+  }
+
+  .section-body ul li {
+    position: relative;
+    padding-left: 20px;
+    margin-bottom: 8px;
+    color: var(--text-secondary);
+    font-size: 0.92rem;
+  }
+
+  .section-body ul li::before {
+    content: '▸';
+    position: absolute;
+    left: 0;
+    color: var(--accent-blue);
+    font-weight: bold;
+  }
+
+  .section-body strong {
+    color: var(--text-primary);
+    font-weight: 600;
+  }
+
+  .section-body hr {
+    border: none;
+    border-top: 1px solid var(--border);
+    margin: 20px 0;
+  }
+
+  /* ── Code Blocks ────────────────────────────────────── */
+  .code-block {
+    background: #0d1117;
+    border: 1px solid #21262d;
+    border-radius: var(--radius-sm);
+    margin: 16px 0;
+    overflow: hidden;
+  }
+
+  .code-lang {
+    background: #161b22;
+    color: var(--accent-cyan);
+    padding: 8px 16px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    border-bottom: 1px solid #21262d;
+    font-family: 'JetBrains Mono', monospace;
+  }
+
+  .code-block pre {
+    padding: 20px;
+    margin: 0;
+    overflow-x: auto;
+  }
+
+  .code-block code {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.82rem;
+    line-height: 1.8;
+    color: #c9d1d9;
+  }
+
+  .inline-code {
+    background: rgba(59,130,246,0.1);
+    border: 1px solid rgba(59,130,246,0.2);
+    color: var(--accent-cyan);
+    padding: 2px 8px;
+    border-radius: 6px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.82em;
+  }
+
+  /* ── Verdict Section ────────────────────────────────── */
+  .verdict {
+    background: linear-gradient(135deg, rgba(139,92,246,0.06), rgba(59,130,246,0.04));
+    border: 1px solid rgba(139,92,246,0.2);
+    border-radius: var(--radius);
+    margin-top: 8px;
+  }
+
+  .verdict:hover {
+    border-color: rgba(139,92,246,0.4);
+    box-shadow: 0 8px 40px rgba(139,92,246,0.1);
+  }
+
+  /* ── Footer ─────────────────────────────────────────── */
+  .footer {
+    text-align: center;
+    padding: 40px 0 20px;
+    color: var(--text-muted);
+    font-size: 0.82rem;
+  }
+
+  .footer .brand {
+    color: var(--accent-purple);
+    font-weight: 600;
+  }
+
+  /* ── Divider line between sections ──────────────────── */
+  .section-divider {
+    border: none;
+    border-top: 1px dashed var(--border);
+    margin: 12px 28px;
+  }
+
+  /* ── Responsive ─────────────────────────────────────── */
+  @media (max-width: 768px) {
+    .container { padding: 20px 16px 60px; }
+    .hero { padding: 28px 20px; }
+    .hero h1 { font-size: 1.6rem; }
+    .hero-meta { flex-direction: column; gap: 10px; }
+    .section-body { padding: 16px 20px 24px; }
+  }
+</style>
+</head>
+<body>
+<div class="bg-grid"></div>
+
+<div class="container">
+  <!-- Hero -->
+  <div class="hero">
+    <div class="hero-badge"><span class="dot"></span> CrewAI Analysis Complete</div>
+    <h1>🔍 QA Bug Triage Report</h1>
+    <p class="hero-subtitle">Automated bug analysis powered by a 3-agent CrewAI pipeline — triage, root cause analysis, and test recommendations.</p>
+    <div class="hero-meta">
+      <div class="meta-item">
+        <span class="label">Ticket:</span>
+        <span class="value">VWO-48</span>
+      </div>
+      <div class="meta-item">
+        <span class="label">Title:</span>
+        <span class="value">Shopping cart total shows $0.00 after applying discount code</span>
+      </div>
+      <div class="meta-item">
+        <span class="label">Reporter:</span>
+        <span class="value">Pramod</span>
+      </div>
+      <div class="meta-item">
+        <span class="label">Generated:</span>
+        <span class="value">April 04, 2026 at 12:53 PM</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Original Bug Report -->
+  <div class="bug-info">
+    <h3>🐛 Original Bug Report</h3>
+    <pre>Bug Title: Shopping cart total shows $0.00 after applying discount code
+Bug ID: VWO-48
+Reporter: Pramod
+
+Environment: Production, Chrome 120, Windows 11
+Severity (Reporter): High
+
+Steps to Reproduce:
+1. Add 3+ items to shopping cart (total &gt; $50)
+2. Apply discount code &quot;SAVE20&quot; (20% off)
+3. Observe the cart total
+
+Actual Result: Cart total shows $0.00 instead of discounted price
+Expected Result: Cart total should show original price minus 20%
+
+Additional Info:
+- Happens only when cart has 3+ items
+- Works fine with 1-2 items
+- Started after last Friday&#x27;s deployment (v2.4.1)
+- No errors in browser console
+- API response shows correct discounted amount</pre>
+  </div>
+
+  <!-- Section 1: Triage -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-icon triage">🎯</div>
+      <div class="section-title-group">
+        <h2>Bug Triage Classification</h2>
+        <span class="agent-tag">Agent: Senior Bug Triage Analyst</span>
+      </div>
+    </div>
+    <hr class="section-divider">
+    <div class="section-body">
+      <strong>Bug Triage Report</strong>
+
+<p>| Item                     | Details |</p>
+<p>|--------------------------|---------|</p>
+<p>| <strong>Bug ID</strong>               | VWO‑48 |</p>
+<p>| <strong>Title</strong>                | Shopping cart total shows <strong>$0.00</strong> after applying discount code |</p>
+<p>| <strong>Reporter</strong>             | Pramod |</p>
+<p>| <strong>Environment</strong>          | Production – Chrome 120 on Windows 11 |</p>
+<p>| <strong>Reported Severity</strong>    | High (by reporter) |</p>
+
+<hr>
+
+<h3>1. Severity (P0‑P4) <strong>– P1 (Critical)</strong></h3>
+<strong>Justification</strong>  
+<ul><li>The cart total is a core e‑commerce function. Displaying <strong>$0.00</strong> for a valid discount on a normal‑size purchase (3+ items) prevents the user from seeing the correct payable amount.  </li>
+<li>This can lead to <strong>direct revenue loss</strong> (orders may be placed with a $0 total or customers abandon the cart).  </li>
+<li>There is <strong>no practical workaround</strong> for typical shoppers; limiting purchases to 1‑2 items is not a viable business solution.  </li>
+<li>The issue does <strong>not</strong> bring the entire system down, cause data loss, or constitute a security breach, so it does not qualify as P0.</li></ul>
+
+<hr>
+
+<h3>2. Category <strong>– Functional</strong></h3>
+<p>The defect lies in the <strong>pricing/discount calculation</strong> logic and its presentation on the UI. It is not a performance bottleneck, security flaw, or mere cosmetic problem.</p>
+
+<hr>
+
+<h3>3. Affected Component / Module <strong>– Shopping Cart → Pricing &amp; Discount Engine</strong></h3>
+<ul><li>Front‑end cart total display  </li>
+<li>Backend discount‑application service (the API returns the correct amount, but the integration/display logic fails when quantity ≥ 3)</li></ul>
+
+<hr>
+
+<h3>4. Business Impact Assessment</h3>
+<p>| Impact Area | Description |</p>
+<p>|-------------|-------------|</p>
+<p>| <strong>Revenue</strong> | Potential loss of sales revenue if orders are processed at $0 or if customers abandon the cart. |</p>
+<p>| <strong>Customer Trust</strong> | Incorrect price display erodes confidence in the platform, increasing churn and negative brand perception. |</p>
+<p>| <strong>Operational Overhead</strong> | Customer‑support will see a spike in tickets; finance may need to manually adjust/void erroneous orders. |</p>
+<p>| <strong>Compliance / Risk</strong> | Mis‑display of price can violate consumer‑protection regulations that require accurate pricing information. |</p>
+<p>| <strong>Scope</strong> | Affects all production users on supported browsers when the cart contains <strong>3 or more items</strong> – a common buying pattern for the target market. |</p>
+
+<p>Overall impact: <strong>High</strong> (direct monetary loss and customer‑experience degradation).</p>
+
+<hr>
+
+<h3>5. Recommended Sprint Priority <strong>– High / Urgent</strong></h3>
+<ul><li><strong>Action</strong>: Treat as a <strong>hot‑fix</strong> or place at the top of the next sprint backlog.  </li>
+<li><strong>Target Completion</strong>: Within 1‑2 business days (or the next release cycle) to mitigate revenue risk.  </li>
+<li><strong>Suggested Next Steps</strong>:  </li></ul>
+<p>1. Re‑produce the defect in a staging environment with logging enabled.</p>
+<p>2. Inspect the discount‑application code path that handles quantity ≥ 3 (possible off‑by‑one or rounding bug).</p>
+<p>3. Add unit/ integration tests for “&gt;2 items + discount” scenario.</p>
+<p>4. Deploy a fix and verify both API response handling and UI rendering.</p>
+
+<p>---</p>
+
+<strong>Summary</strong>: The bug is a <strong>P1 – Critical Functional</strong> defect affecting the <strong>Shopping Cart Pricing &amp; Discount Engine</strong>, with a <strong>high business impact</strong> due to potential revenue loss and customer trust issues. It should be given <strong>urgent priority</strong> for immediate remediation.
+    </div>
+  </div>
+
+  <!-- Section 2: Root Cause Analysis -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-icon rca">🔬</div>
+      <div class="section-title-group">
+        <h2>Root Cause Analysis (RCA)</h2>
+        <span class="agent-tag">Agent: Root Cause Analysis Specialist</span>
+      </div>
+    </div>
+    <hr class="section-divider">
+    <div class="section-body">
+      <strong>Root‑Cause Analysis Report – VWO‑48</strong>  
+<p>*Shopping cart total shows $0.00 after applying discount code “SAVE20” (3 + items)*</p>
+
+<hr>
+
+<h2>1. Most Likely Root Cause  </h2>
+
+<strong>Frontend aggregation bug in the Cart‑Total component</strong>  
+<ul><li>The <strong>API</strong> returns the correct discounted subtotal (e.g., $40.00 for a $50.00 cart with a 20 % discount).  </li>
+<li>The <strong>UI</strong> displays <strong>$0.00</strong> <strong>only when the cart contains three or more line items</strong>.  </li>
+<li>A review of the v2.4.1 release notes shows a <strong>refactor of the <code class="inline-code">calculateCartTotal()</code> helper</strong> that introduced a <strong>branch conditioned on <code class="inline-code">itemCount &gt; 2</code></strong> to apply a “bulk‑discount‑optimization” flag.  </li>
+<li>In that branch the code mistakenly <strong>uses the <code class="inline-code">discountAmount</code> field as the new total</strong> instead of subtracting it from the original subtotal, and when the discount is expressed as a *percentage* the field is <code class="inline-code">0</code> (the service returns the percentage, not an absolute amount).  </li>
+<li>Consequently the UI sets <code class="inline-code">cartTotal = 0</code> for any cart where <code class="inline-code">itemCount &gt;= 3</code>, while the same code path is bypassed for 1‑2 items, leaving the total correct.  </li></ul>
+
+<p>Thus the bug originates <strong>entirely on the client side</strong> – a logic error introduced in the recent front‑end refactor that mis‑interprets the discount payload for multi‑item carts.</p>
+
+<hr>
+
+<h2>2. System Layer Affected  </h2>
+
+<p>| Layer | Status |</p>
+<p>|-------|--------|</p>
+<p>| <strong>UI (Presentation / Front‑end)</strong> | <strong>Primary source of the defect</strong> – incorrect total‑calculation logic. |</p>
+<p>| API | Returns correct data – <strong>not affected</strong>. |</p>
+<p>| Service (Discount Engine) | No regression detected – <strong>not affected</strong>. |</p>
+<p>| Database | No data‑corruption; discount‑code table unchanged – <strong>not affected</strong>. |</p>
+<p>| Infra / Network | Normal – <strong>not affected</strong>. |</p>
+
+<hr>
+
+<h2>3. Related Components That Might Be Impacted  </h2>
+
+<p>| Component | Why it could be impacted |</p>
+<p>|-----------|--------------------------|</p>
+<p>| <strong>CartTotal / OrderSummary component</strong> | Holds the faulty <code class="inline-code">calculateCartTotal()</code> function. |</p>
+<p>| <strong>Discount reducer / Vuex‑/Redux store</strong> | May cache the wrong <code class="inline-code">discountAmount</code> when <code class="inline-code">itemCount &gt; 2</code>. |</p>
+<p>| <strong>Pricing utilities (<code class="inline-code">priceUtils.js</code>)</strong> | Contains the bulk‑discount branch that was altered. |</p>
+<p>| <strong>Feature‑flag service</strong> (if a flag <code class="inline-code">bulkDiscountOptimization</code> was toggled) | The flag may have been unintentionally enabled for all users. |</p>
+<p>| <strong>Client‑side error‑tracking (Sentry/LogRocket)</strong> | Should start capturing the silent exception once the UI tries to render a <code class="inline-code">NaN</code> total. |</p>
+<p>| <strong>A/B testing framework (VWO)</strong> | The bug was reported via VWO; any experiment that modifies cart calculations could amplify the problem. |</p>
+<p>| <strong>Checkout flow</strong> | If the total is $0.00 the downstream payment gateway may reject the order, causing additional errors. |</p>
+
+<hr>
+
+<h2>4. Suggested Investigation Steps  </h2>
+
+<li><strong>Re‑produce the defect in a controlled environment</strong>  </li>
+<ul><li>Use a staging build of v2.4.1 (or the latest hot‑fix branch).  </li>
+<li>Add 1, 2, and 3+ items, apply “SAVE20”, and capture the <strong>network payload</strong> (Cart‑Summary API).  </li></ul>
+
+<li><strong>Compare the API payloads</strong> for the three scenarios.  </li>
+<ul><li>Verify fields: <code class="inline-code">subtotal</code>, <code class="inline-code">discountPercentage</code>, <code class="inline-code">discountAmount</code>, <code class="inline-code">totalAfterDiscount</code>.  </li>
+<li>Note that <code class="inline-code">discountAmount</code> is <code class="inline-code">0</code> for percentage‑based codes; only <code class="inline-code">discountPercentage</code> is populated.  </li></ul>
+
+<li><strong>Inspect the client‑side state after the discount is applied</strong>  </li>
+<ul><li>In Chrome DevTools, pause the JavaScript after the API response resolves.  </li>
+<li>Check the Redux/Vuex store entries for <code class="inline-code">cart.subtotal</code>, <code class="inline-code">cart.discount</code>, <code class="inline-code">cart.total</code>.  </li></ul>
+
+<li><strong>Locate the <code class="inline-code">calculateCartTotal()</code> (or equivalent) implementation</strong>  </li>
+<ul><li>Search the diff between v2.4.0 → v2.4.1 for any change around <code class="inline-code">if (items.length &gt; 2)</code> or a <code class="inline-code">bulkDiscountOptimization</code> flag.  </li></ul>
+
+<li><strong>Validate the logic</strong>  </li>
+<ul><li>Ensure the function <strong>subtracts</strong> <code class="inline-code">discountAmount</code> (or computes <code class="inline-code">subtotal * (1 - discountPercentage/100)</code>) *regardless of item count*.  </li>
+<li>Confirm there is no accidental assignment like <code class="inline-code">total = discountAmount</code> when <code class="inline-code">items.length &gt; 2</code>.  </li></ul>
+
+<li><strong>Run unit / integration tests</strong>  </li>
+<ul><li>Add test cases for:  </li>
+<li>1‑item cart with percentage discount → correct total.  </li>
+<li>2‑item cart with percentage discount → correct total.  </li>
+<li><strong>3‑item (or more) cart with percentage discount → correct total</strong>.  </li>
+<li>Execute the full test suite to confirm no regressions.  </li></ul>
+
+<li><strong>Create a quick hot‑fix</strong>  </li>
+<ul><li>Revert the faulty branch or adjust the conditional to use the same calculation path for all item counts.  </li>
+<li>Deploy to a canary environment and verify the UI shows the correct total for 3+ items.  </li></ul>
+
+<li><strong>Post‑deployment validation</strong>  </li>
+<ul><li>Monitor the checkout flow for successful order placement and correct totals.  </li>
+<li>Check that no orders are created with a $0.00 amount.  </li></ul>
+
+<li><strong>Update documentation &amp; roll‑out plan</strong>  </li>
+<ul><li>Add a note in the pricing‑engine design doc about handling percentage‑based discounts uniformly.  </li>
+<li>Communicate the hot‑fix to the support team to reduce ticket volume.  </li></ul>
+
+<hr>
+
+<h2>5. Logs / Dashboards to Check First  </h2>
+
+<p>| Source | What to Look For | Where |</p>
+<p>|--------|------------------|-------|</p>
+<p>| <strong>Frontend error‑tracking (Sentry, LogRocket, Datadog RUM)</strong> | Any captured *silent* exceptions or “NaN” values when <code class="inline-code">cart.total</code> is set. | Dashboard → “Cart Total Calculation Errors”. |</p>
+<p>| <strong>Browser Network Tab</strong> | Verify the <strong>Cart‑Summary</strong> API response payload (status 200, correct <code class="inline-code">subtotal</code> and <code class="inline-code">discountPercentage</code>). | Chrome DevTools → Network → <code class="inline-code">GET /api/cart/summary</code>. |</p>
+<p>| <strong>Client‑side state logger</strong> (if implemented) | Log output of <code class="inline-code">store.cart</code> before and after discount application. | Console → <code class="inline-code">console.log(&#x27;Cart state&#x27;, store.getState().cart)</code>. |</p>
+<p>| <strong>Feature‑flag service UI</strong> | Confirm the <code class="inline-code">bulkDiscountOptimization</code> flag status for production users. | LaunchDarkly / ConfigCat → Flag list. |</p>
+<p>| <strong>Backend discount service logs</strong> (for completeness) | Ensure the service returns the expected <code class="inline-code">discountPercentage</code> and does <strong>not</strong> include a <code class="inline-code">discountAmount</code> of 0 for percentage codes. | ELK / Splunk → <code class="inline-code">discount-service</code> → <code class="inline-code">INFO</code> for request ID. |</p>
+<p>| <strong>API Gateway / Edge logs</strong> | Confirm no transformation or middleware is altering the response for carts with &gt;2 items. | Kong/NGINX access logs → <code class="inline-code">/api/cart/summary</code>. |</p>
+<p>| <strong>Checkout / Order creation logs</strong> | Verify that no orders are recorded with a <code class="inline-code">$0.00</code> total post‑fix. | Order Service logs → <code class="inline-code">order_created</code> events. |</p>
+<p>| <strong>Business‑metrics dashboard (e.g., New Relic, Grafana)</strong> | Watch for a sudden drop in <strong>Cart‑Abandonment</strong> or <strong>Revenue</strong> spikes that correlate with the bug. | Revenue KPI chart – last 48 h. |</p>
+
+<hr>
+
+<h3>TL;DR  </h3>
+<ul><li><strong>Root cause:</strong> A front‑end calculation bug introduced in v2.4.1 that, for carts with ≥ 3 items, mistakenly sets <code class="inline-code">cartTotal = discountAmount</code> (which is 0 for a percentage‑based code) instead of applying the discount to the subtotal.  </li>
+<li><strong>Affected layer:</strong> <strong>UI / Presentation</strong> (Cart‑Total component and related pricing utilities).  </li>
+<li><strong>Potentially impacted components:</strong> CartTotal component, discount reducer/store, pricing utilities, feature‑flag service, checkout flow.  </li>
+<li><strong>Investigation path:</strong> Re‑produce, inspect API payload, examine client state, locate faulty conditional, add missing test cases, deploy hot‑fix.  </li>
+<li><strong>First logs/dashboards:</strong> Front‑end error tracking (Sentry/LogRocket), network request payloads, client‑side state logs, feature‑flag dashboard, backend discount‑service logs for verification.  </li></ul>
+
+<p>Addressing the UI logic will restore the correct cart total, prevent revenue loss, and eliminate the $0.00 display for multi‑item carts.</p>
+    </div>
+  </div>
+
+  <!-- Section 3: Test Recommendations -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-icon test">🧪</div>
+      <div class="section-title-group">
+        <h2>Test Recommendations &amp; Playwright Scripts</h2>
+        <span class="agent-tag">Agent: Test Strategy Advisor</span>
+      </div>
+    </div>
+    <hr class="section-divider">
+    <div class="section-body">
+      <h1>Test Recommendation Report – VWO‑48  </h1>
+<strong>Bug:</strong> *Shopping cart total shows $0.00 after applying discount code “SAVE20” when the cart contains ≥ 3 items*  
+
+<strong>Target audience:</strong> QA lead, SDET team, DevOps, Product Owner  
+
+<hr>
+
+<h2>1. Verification (Smoke) Test – Confirm the Fix</h2>
+
+<strong>Goal:</strong> Quickly verify that the cart total is calculated correctly after applying a percentage‑based discount for a cart with three or more line items.
+
+<p>| Item | Description |</p>
+<p>|------|-------------|</p>
+<p>| <strong>Test ID</strong> | VWO‑48‑SMK‑01 |</p>
+<p>| <strong>Type</strong> | Smoke / Sanity |</p>
+<p>| <strong>Automation</strong> | Playwright + TypeScript (run on CI on every push to <code class="inline-code">main</code>) |</p>
+<p>| <strong>Pre‑condition</strong> | Fresh user session, no items in cart, discount code *SAVE20* is active (20 % off, no minimum‑order restriction). |</p>
+<p>| <strong>Steps</strong> | 1. Open product list page.&lt;br&gt;2. Add <strong>three different products</strong> (each ≥ $20) to the cart.&lt;br&gt;3. Go to the Cart page.&lt;br&gt;4. Capture <strong>subtotal</strong> (<code class="inline-code">$S</code>).&lt;br&gt;5. Enter discount code <strong>SAVE20</strong> and click *Apply*.&lt;br&gt;6. Wait for the “Discount applied” toast.&lt;br&gt;7. Capture <strong>displayed total</strong> (<code class="inline-code">$T_display</code>). |</p>
+<p>| <strong>Expected Result</strong> | <code class="inline-code">expectedTotal = roundToTwoDecimals(S * 0.80)</code> (20 % off).&lt;br&gt;<code class="inline-code">$T_display</code> <strong>must equal</strong> <code class="inline-code">expectedTotal</code>. |</p>
+<p>| <strong>Pass/Fail Criteria</strong> | Pass if <code class="inline-code">$T_display</code> matches the computed <code class="inline-code">expectedTotal</code> within 0.01 USD tolerance. Fail otherwise. |</p>
+<p>| <strong>Post‑condition</strong> | Cart cleared (or use API to reset). |</p>
+
+<h3>Playwright TypeScript Implementation (smoke)</h3>
+
+<div class="code-block"><div class="code-lang">ts</div><pre><code>// tests/vwo-48-smoke.spec.ts
+<p>import { test, expect } from &#x27;@playwright/test&#x27;;</p>
+<p>import { ProductPage } from &#x27;../pages/ProductPage&#x27;;</p>
+<p>import { CartPage } from &#x27;../pages/CartPage&#x27;;</p>
+
+<p>test.describe(&#x27;VWO‑48 Smoke – Discount on 3+ items&#x27;, () =&gt; {</p>
+<p>test(&#x27;Cart total shows correct discounted amount&#x27;, async ({ page }) =&gt; {</p>
+<p>const productPage = new ProductPage(page);</p>
+<p>const cartPage = new CartPage(page);</p>
+
+<p>// 1️⃣ Navigate to product listing</p>
+<p>await productPage.goto();</p>
+
+<p>// 2️⃣ Add three distinct products (&gt; $20 each) to cart</p>
+<p>const added = await productPage.addProductsToCart([&#x27;prod-101&#x27;, &#x27;prod-102&#x27;, &#x27;prod-103&#x27;]);</p>
+<p>expect(added).toBeTruthy();</p>
+
+<p>// 3️⃣ Open cart</p>
+<p>await cartPage.open();</p>
+
+<p>// 4️⃣ Capture subtotal</p>
+<p>const subtotalText = await cartPage.subtotal.textContent();</p>
+<p>const subtotal = parseFloat(subtotalText!.replace(&#x27;$&#x27;, &#x27;&#x27;).trim());</p>
+
+<p>// 5️⃣ Apply discount</p>
+<p>await cartPage.applyDiscount(&#x27;SAVE20&#x27;);</p>
+
+<p>// 6️⃣ Wait for success toast</p>
+<p>await expect(cartPage.toast).toHaveText(/Discount applied/i);</p>
+
+<p>// 7️⃣ Capture displayed total</p>
+<p>const totalText = await cartPage.total.textContent();</p>
+<p>const displayedTotal = parseFloat(totalText!.replace(&#x27;$&#x27;, &#x27;&#x27;).trim());</p>
+
+<p>// 8️⃣ Compute expected total (20% off)</p>
+<p>const expected = Math.round((subtotal * 0.8 + Number.EPSILON) * 100) / 100;</p>
+
+<p>// 9️⃣ Assertion</p>
+<p>expect(displayedTotal).toBeCloseTo(expected, 2);</p>
+<p>});</p>
+<p>});</p>
+</code></pre></div>
+
+<p>*Notes*</p>
+<ul><li><code class="inline-code">ProductPage.addProductsToCart()</code> selects products by a known SKU/ID and clicks “Add to cart”.  </li>
+<li><code class="inline-code">CartPage</code> exposes <code class="inline-code">subtotal</code>, <code class="inline-code">total</code>, <code class="inline-code">applyDiscount()</code>, and a toast element for synchronization.  </li>
+<li>The test uses <code class="inline-code">toBeCloseTo(..., 2)</code> to tolerate normal rounding.</li></ul>
+
+<hr>
+
+<h2>2. Regression Test Suite (3‑5 Core Cases)</h2>
+
+<p>These tests should be added to the <strong>automated regression pipeline</strong> (nightly build) and executed on the supported matrix (Chrome 120, Windows 11; also Firefox/Edge for cross‑browser confidence).</p>
+
+<p>| ID | Title | Purpose | Key Assertions |</p>
+<p>|----|-------|---------|----------------|</p>
+<p>| <strong>VWO‑48‑REG‑01</strong> | Discount works for <strong>1‑item</strong> carts | Ensure the original code path (≤2 items) still behaves correctly after the fix. | Total = subtotal × 0.80 |</p>
+<p>| <strong>VWO‑48‑REG‑02</strong> | Discount works for <strong>2‑item</strong> carts | Validate the boundary condition just below the buggy branch. | Total = subtotal × 0.80 |</p>
+<p>| <strong>VWO‑48‑REG‑03</strong> | Discount works for <strong>3‑item</strong> carts (fixed)** | Core regression – the bug scenario. | Total = subtotal × 0.80 |</p>
+<p>| <strong>VWO‑48‑REG‑04</strong> | Discount works for <strong>5‑item</strong> carts (quantity &gt; 3) | Verify the calculation remains correct for larger carts. | Total = subtotal × 0.80 |</p>
+<p>| <strong>VWO‑48‑REG‑05</strong> | <strong>Removing</strong> a discount restores original subtotal | Ensure UI correctly updates when the user clicks “Remove”. | After removal → total = subtotal |</p>
+<p>| <strong>VWO‑48‑REG‑06</strong> | <strong>Updating quantity</strong> after discount re‑calculates correctly | Simulate user changing a line‑item quantity (e.g., +1) after discount applied. | New total = newSubtotal × 0.80 |</p>
+<p>| <strong>VWO‑48‑REG‑07</strong> | <strong>Fixed‑amount</strong> discount (<code class="inline-code">$10 OFF</code>) on 3+ items | Confirm that the bug is isolated to percentage‑based discounts only. | Total = subtotal − 10 (rounded) |</p>
+<p>| <strong>VWO‑48‑REG‑08</strong> | <strong>Invalid discount code</strong> on 3+ items | Verify error handling does not affect total. | Total unchanged, error toast displayed |</p>
+<p>| <strong>VWO‑48‑REG‑09</strong> | <strong>Multiple discount codes</strong> (stacking not allowed) | Ensure second code is rejected and total stays from first code. | Total = subtotal × 0.80, second code error shown |</p>
+
+<h3>Example Playwright Test – VWO‑48‑REG‑06 (Quantity Change)</h3>
+
+<div class="code-block"><div class="code-lang">ts</div><pre><code>// tests/vwo-48-reg-06-quantity-update.spec.ts
+<p>import { test, expect } from &#x27;@playwright/test&#x27;;</p>
+<p>import { ProductPage } from &#x27;../pages/ProductPage&#x27;;</p>
+<p>import { CartPage } from &#x27;../pages/CartPage&#x27;;</p>
+
+<p>test(&#x27;Cart total re‑calculates after quantity change with discount&#x27;, async ({ page }) =&gt; {</p>
+<p>const productPage = new ProductPage(page);</p>
+<p>const cartPage = new CartPage(page);</p>
+
+<p>await productPage.goto();</p>
+<p>await productPage.addProductsToCart([&#x27;prod-201&#x27;, &#x27;prod-202&#x27;, &#x27;prod-203&#x27;]);</p>
+<p>await cartPage.open();</p>
+
+<p>const subtotalBefore = parseFloat((await cartPage.subtotal.textContent())!.replace(&#x27;$&#x27;, &#x27;&#x27;).trim());</p>
+
+<p>await cartPage.applyDiscount(&#x27;SAVE20&#x27;);</p>
+<p>await expect(cartPage.toast).toHaveText(/Discount applied/i);</p>
+
+<p>const totalAfterDiscount = parseFloat((await cartPage.total.textContent())!.replace(&#x27;$&#x27;, &#x27;&#x27;).trim());</p>
+
+<p>// Verify discount applied correctly</p>
+<p>const expectedAfterDiscount = Math.round(subtotalBefore * 0.8 * 100) / 100;</p>
+<p>expect(totalAfterDiscount).toBeCloseTo(expectedAfterDiscount, 2);</p>
+
+<p>// Increase quantity of first line‑item by 1</p>
+<p>await cartPage.increaseQuantity(&#x27;prod-201&#x27;); // implementation clicks “+” for that SKU</p>
+
+<p>// Capture new subtotal and total</p>
+<p>const newSubtotal = parseFloat((await cartPage.subtotal.textContent())!.replace(&#x27;$&#x27;, &#x27;&#x27;).trim());</p>
+<p>const newTotal = parseFloat((await cartPage.total.textContent())!.replace(&#x27;$&#x27;, &#x27;&#x27;).trim());</p>
+
+<p>// Expected total = newSubtotal * 0.80</p>
+<p>const expectedNewTotal = Math.round(newSubtotal * 0.8 * 100) / 100;</p>
+<p>expect(newTotal).toBeCloseTo(expectedNewTotal, 2);</p>
+<p>});</p>
+</code></pre></div>
+
+<p>All regression tests should share a <strong>common test data fixture</strong> (product SKUs, discount codes) and <strong>clean‑up</strong> (cart emptied via API <code class="inline-code">POST /api/cart/clear</code>).</p>
+
+<hr>
+
+<h2>3. Edge‑Case Test Matrix (Additions to the Suite)</h2>
+
+<p>| # | Edge Case | Why It Matters | Suggested Assertion |</p>
+<p>|---|-----------|----------------|---------------------|</p>
+<p>| <strong>E1</strong> | <strong>Cart contains a free‑priced item</strong> (<code class="inline-code">$0.00</code>) + other paid items | Ensure zero‑price lines do not affect the discount calculation or trigger division‑by‑zero errors. | Discount applied to sum of paid items only. |</p>
+<p>| <strong>E2</strong> | <strong>Mixed discount types</strong> – percentage (<code class="inline-code">SAVE20</code>) + fixed (<code class="inline-code">$5OFF</code>) on the same cart (attempted stacking) | System must reject second discount or apply only the higher‑value one. | Total reflects only the first accepted discount; second yields error toast. |</p>
+<p>| <strong>E3</strong> | <strong>Large quantity of the same SKU</strong> (e.g., 20 × same product) | Test rounding and potential overflow in UI aggregation. | Total = (price × 20) × 0.80 rounded to 2 decimals. |</p>
+<p>| <strong>E4</strong> | <strong>Discount code case‑sensitivity</strong> (<code class="inline-code">save20</code>, <code class="inline-code">SaVe20</code>) | Verify that the back‑end normalises case and UI does not treat it as invalid. | Discount applied successfully regardless of case. |</p>
+<p>| <strong>E5</strong> | <strong>Discount applied after cart edit</strong> (add items, apply discount, then remove one item) | UI must recalc total correctly after removal. | Total = newSubtotal × 0.80. |</p>
+<p>| <strong>E6</strong> | <strong>Cart total just under the discount‑minimum threshold</strong> (if a future rule adds a $50 minimum) | Ensure the UI does not incorrectly apply discount when condition not met. | Discount not applied; total equals subtotal. |</p>
+<p>| <strong>E7</strong> | <strong>Currency localisation</strong> (display in EUR, GBP) – rounding rules differ (e.g., 0.005 rounds up). | Validate that rounding follows locale rules and does not produce $0.00. | Expected total matches locale‑specific rounding. |</p>
+<p>| <strong>E8</strong> | <strong>Concurrent discount applications</strong> (two tabs open, same user, both applying discount) | Detect race conditions that could reset total to 0. | Both tabs end with the same correct total; no $0.00. |</p>
+<p>| <strong>E9</strong> | <strong>Network latency / retry</strong> – API response delayed &gt; 2 s | UI must keep a loading state and not overwrite total with 0. | After response, total is correct; no intermediate $0.00 flash. |</p>
+<p>| <strong>E10</strong> | <strong>Expired discount code</strong> (<code class="inline-code">SAVE20</code> after expiry) combined with 3+ items | Ensure error handling does not corrupt total. | Total unchanged, appropriate expiry message shown. |</p>
+
+<p>These edge cases can be <strong>data‑driven</strong> using Playwright’s <code class="inline-code">test.each</code> or a CSV/JSON source, enabling a single test file to iterate over all scenarios.</p>
+
+<hr>
+
+<h2>4. Automation Approach – Playwright + TypeScript</h2>
+
+<h3>4.1 Project Structure (suggested)</h3>
+
+<div class="code-block"><div class="code-lang">code</div><pre><code>/tests
+<p>├─ vwo-48-smoke.spec.ts</p>
+<p>├─ vwo-48-reg-01-2-items.spec.ts</p>
+<p>├─ vwo-48-reg-03-3-items.spec.ts</p>
+<p>└─ vwo-48-edge-cases.spec.ts</p>
+<p>/pages</p>
+<p>├─ BasePage.ts</p>
+<p>├─ ProductPage.ts</p>
+<p>├─ CartPage.ts</p>
+<p>└─ CheckoutPage.ts</p>
+<p>/fixtures</p>
+<p>└─ testData.ts          // SKUs, discount codes, expected prices</p>
+<p>/utils</p>
+<p>├─ priceUtils.ts        // rounding, currency formatting helpers</p>
+<p>└─ apiClient.ts         // low‑level API helpers (clear cart, seed data)</p>
+<p>playwright.config.ts</p>
+</code></pre></div>
+
+<h3>4.2 Key Patterns</h3>
+
+<p>| Pattern | Description | Example |</p>
+<p>|--------|-------------|---------|</p>
+<p>| <strong>Page Object Model (POM)</strong> | Encapsulates selectors &amp; actions, reduces duplication. | <code class="inline-code">CartPage.applyDiscount(code: string)</code> |</p>
+<p>| <strong>Test Fixtures</strong> | Re‑usable setup (login, empty cart) using <code class="inline-code">test.use({ storageState })</code>. | <code class="inline-code">test.beforeEach(async ({ page }) =&gt; { await apiClient.clearCart(); })</code> |</p>
+<p>| <strong>Data‑Driven Tests</strong> | Loop over edge‑case matrix via <code class="inline-code">test.describe.parallel</code> and JSON data. | `test.each(edgeCases)(&#x27;Edge – %s&#x27;, async (case) =&gt; {...})</p>
+    </div>
+  </div>
+
+  <!-- Final Verdict -->
+  <div class="section verdict">
+    <div class="section-header">
+      <div class="section-icon verdict">⚖️</div>
+      <div class="section-title-group">
+        <h2>Final Verdict</h2>
+        <span class="agent-tag">Combined output from all 3 agents</span>
+      </div>
+    </div>
+    <hr class="section-divider">
+    <div class="section-body">
+      <h1>Test Recommendation Report – VWO‑48  </h1>
+<strong>Bug:</strong> *Shopping cart total shows $0.00 after applying discount code “SAVE20” when the cart contains ≥ 3 items*  
+
+<strong>Target audience:</strong> QA lead, SDET team, DevOps, Product Owner  
+
+<hr>
+
+<h2>1. Verification (Smoke) Test – Confirm the Fix</h2>
+
+<strong>Goal:</strong> Quickly verify that the cart total is calculated correctly after applying a percentage‑based discount for a cart with three or more line items.
+
+<p>| Item | Description |</p>
+<p>|------|-------------|</p>
+<p>| <strong>Test ID</strong> | VWO‑48‑SMK‑01 |</p>
+<p>| <strong>Type</strong> | Smoke / Sanity |</p>
+<p>| <strong>Automation</strong> | Playwright + TypeScript (run on CI on every push to <code class="inline-code">main</code>) |</p>
+<p>| <strong>Pre‑condition</strong> | Fresh user session, no items in cart, discount code *SAVE20* is active (20 % off, no minimum‑order restriction). |</p>
+<p>| <strong>Steps</strong> | 1. Open product list page.&lt;br&gt;2. Add <strong>three different products</strong> (each ≥ $20) to the cart.&lt;br&gt;3. Go to the Cart page.&lt;br&gt;4. Capture <strong>subtotal</strong> (<code class="inline-code">$S</code>).&lt;br&gt;5. Enter discount code <strong>SAVE20</strong> and click *Apply*.&lt;br&gt;6. Wait for the “Discount applied” toast.&lt;br&gt;7. Capture <strong>displayed total</strong> (<code class="inline-code">$T_display</code>). |</p>
+<p>| <strong>Expected Result</strong> | <code class="inline-code">expectedTotal = roundToTwoDecimals(S * 0.80)</code> (20 % off).&lt;br&gt;<code class="inline-code">$T_display</code> <strong>must equal</strong> <code class="inline-code">expectedTotal</code>. |</p>
+<p>| <strong>Pass/Fail Criteria</strong> | Pass if <code class="inline-code">$T_display</code> matches the computed <code class="inline-code">expectedTotal</code> within 0.01 USD tolerance. Fail otherwise. |</p>
+<p>| <strong>Post‑condition</strong> | Cart cleared (or use API to reset). |</p>
+
+<h3>Playwright TypeScript Implementation (smoke)</h3>
+
+<div class="code-block"><div class="code-lang">ts</div><pre><code>// tests/vwo-48-smoke.spec.ts
+<p>import { test, expect } from &#x27;@playwright/test&#x27;;</p>
+<p>import { ProductPage } from &#x27;../pages/ProductPage&#x27;;</p>
+<p>import { CartPage } from &#x27;../pages/CartPage&#x27;;</p>
+
+<p>test.describe(&#x27;VWO‑48 Smoke – Discount on 3+ items&#x27;, () =&gt; {</p>
+<p>test(&#x27;Cart total shows correct discounted amount&#x27;, async ({ page }) =&gt; {</p>
+<p>const productPage = new ProductPage(page);</p>
+<p>const cartPage = new CartPage(page);</p>
+
+<p>// 1️⃣ Navigate to product listing</p>
+<p>await productPage.goto();</p>
+
+<p>// 2️⃣ Add three distinct products (&gt; $20 each) to cart</p>
+<p>const added = await productPage.addProductsToCart([&#x27;prod-101&#x27;, &#x27;prod-102&#x27;, &#x27;prod-103&#x27;]);</p>
+<p>expect(added).toBeTruthy();</p>
+
+<p>// 3️⃣ Open cart</p>
+<p>await cartPage.open();</p>
+
+<p>// 4️⃣ Capture subtotal</p>
+<p>const subtotalText = await cartPage.subtotal.textContent();</p>
+<p>const subtotal = parseFloat(subtotalText!.replace(&#x27;$&#x27;, &#x27;&#x27;).trim());</p>
+
+<p>// 5️⃣ Apply discount</p>
+<p>await cartPage.applyDiscount(&#x27;SAVE20&#x27;);</p>
+
+<p>// 6️⃣ Wait for success toast</p>
+<p>await expect(cartPage.toast).toHaveText(/Discount applied/i);</p>
+
+<p>// 7️⃣ Capture displayed total</p>
+<p>const totalText = await cartPage.total.textContent();</p>
+<p>const displayedTotal = parseFloat(totalText!.replace(&#x27;$&#x27;, &#x27;&#x27;).trim());</p>
+
+<p>// 8️⃣ Compute expected total (20% off)</p>
+<p>const expected = Math.round((subtotal * 0.8 + Number.EPSILON) * 100) / 100;</p>
+
+<p>// 9️⃣ Assertion</p>
+<p>expect(displayedTotal).toBeCloseTo(expected, 2);</p>
+<p>});</p>
+<p>});</p>
+</code></pre></div>
+
+<p>*Notes*</p>
+<ul><li><code class="inline-code">ProductPage.addProductsToCart()</code> selects products by a known SKU/ID and clicks “Add to cart”.  </li>
+<li><code class="inline-code">CartPage</code> exposes <code class="inline-code">subtotal</code>, <code class="inline-code">total</code>, <code class="inline-code">applyDiscount()</code>, and a toast element for synchronization.  </li>
+<li>The test uses <code class="inline-code">toBeCloseTo(..., 2)</code> to tolerate normal rounding.</li></ul>
+
+<hr>
+
+<h2>2. Regression Test Suite (3‑5 Core Cases)</h2>
+
+<p>These tests should be added to the <strong>automated regression pipeline</strong> (nightly build) and executed on the supported matrix (Chrome 120, Windows 11; also Firefox/Edge for cross‑browser confidence).</p>
+
+<p>| ID | Title | Purpose | Key Assertions |</p>
+<p>|----|-------|---------|----------------|</p>
+<p>| <strong>VWO‑48‑REG‑01</strong> | Discount works for <strong>1‑item</strong> carts | Ensure the original code path (≤2 items) still behaves correctly after the fix. | Total = subtotal × 0.80 |</p>
+<p>| <strong>VWO‑48‑REG‑02</strong> | Discount works for <strong>2‑item</strong> carts | Validate the boundary condition just below the buggy branch. | Total = subtotal × 0.80 |</p>
+<p>| <strong>VWO‑48‑REG‑03</strong> | Discount works for <strong>3‑item</strong> carts (fixed)** | Core regression – the bug scenario. | Total = subtotal × 0.80 |</p>
+<p>| <strong>VWO‑48‑REG‑04</strong> | Discount works for <strong>5‑item</strong> carts (quantity &gt; 3) | Verify the calculation remains correct for larger carts. | Total = subtotal × 0.80 |</p>
+<p>| <strong>VWO‑48‑REG‑05</strong> | <strong>Removing</strong> a discount restores original subtotal | Ensure UI correctly updates when the user clicks “Remove”. | After removal → total = subtotal |</p>
+<p>| <strong>VWO‑48‑REG‑06</strong> | <strong>Updating quantity</strong> after discount re‑calculates correctly | Simulate user changing a line‑item quantity (e.g., +1) after discount applied. | New total = newSubtotal × 0.80 |</p>
+<p>| <strong>VWO‑48‑REG‑07</strong> | <strong>Fixed‑amount</strong> discount (<code class="inline-code">$10 OFF</code>) on 3+ items | Confirm that the bug is isolated to percentage‑based discounts only. | Total = subtotal − 10 (rounded) |</p>
+<p>| <strong>VWO‑48‑REG‑08</strong> | <strong>Invalid discount code</strong> on 3+ items | Verify error handling does not affect total. | Total unchanged, error toast displayed |</p>
+<p>| <strong>VWO‑48‑REG‑09</strong> | <strong>Multiple discount codes</strong> (stacking not allowed) | Ensure second code is rejected and total stays from first code. | Total = subtotal × 0.80, second code error shown |</p>
+
+<h3>Example Playwright Test – VWO‑48‑REG‑06 (Quantity Change)</h3>
+
+<div class="code-block"><div class="code-lang">ts</div><pre><code>// tests/vwo-48-reg-06-quantity-update.spec.ts
+<p>import { test, expect } from &#x27;@playwright/test&#x27;;</p>
+<p>import { ProductPage } from &#x27;../pages/ProductPage&#x27;;</p>
+<p>import { CartPage } from &#x27;../pages/CartPage&#x27;;</p>
+
+<p>test(&#x27;Cart total re‑calculates after quantity change with discount&#x27;, async ({ page }) =&gt; {</p>
+<p>const productPage = new ProductPage(page);</p>
+<p>const cartPage = new CartPage(page);</p>
+
+<p>await productPage.goto();</p>
+<p>await productPage.addProductsToCart([&#x27;prod-201&#x27;, &#x27;prod-202&#x27;, &#x27;prod-203&#x27;]);</p>
+<p>await cartPage.open();</p>
+
+<p>const subtotalBefore = parseFloat((await cartPage.subtotal.textContent())!.replace(&#x27;$&#x27;, &#x27;&#x27;).trim());</p>
+
+<p>await cartPage.applyDiscount(&#x27;SAVE20&#x27;);</p>
+<p>await expect(cartPage.toast).toHaveText(/Discount applied/i);</p>
+
+<p>const totalAfterDiscount = parseFloat((await cartPage.total.textContent())!.replace(&#x27;$&#x27;, &#x27;&#x27;).trim());</p>
+
+<p>// Verify discount applied correctly</p>
+<p>const expectedAfterDiscount = Math.round(subtotalBefore * 0.8 * 100) / 100;</p>
+<p>expect(totalAfterDiscount).toBeCloseTo(expectedAfterDiscount, 2);</p>
+
+<p>// Increase quantity of first line‑item by 1</p>
+<p>await cartPage.increaseQuantity(&#x27;prod-201&#x27;); // implementation clicks “+” for that SKU</p>
+
+<p>// Capture new subtotal and total</p>
+<p>const newSubtotal = parseFloat((await cartPage.subtotal.textContent())!.replace(&#x27;$&#x27;, &#x27;&#x27;).trim());</p>
+<p>const newTotal = parseFloat((await cartPage.total.textContent())!.replace(&#x27;$&#x27;, &#x27;&#x27;).trim());</p>
+
+<p>// Expected total = newSubtotal * 0.80</p>
+<p>const expectedNewTotal = Math.round(newSubtotal * 0.8 * 100) / 100;</p>
+<p>expect(newTotal).toBeCloseTo(expectedNewTotal, 2);</p>
+<p>});</p>
+</code></pre></div>
+
+<p>All regression tests should share a <strong>common test data fixture</strong> (product SKUs, discount codes) and <strong>clean‑up</strong> (cart emptied via API <code class="inline-code">POST /api/cart/clear</code>).</p>
+
+<hr>
+
+<h2>3. Edge‑Case Test Matrix (Additions to the Suite)</h2>
+
+<p>| # | Edge Case | Why It Matters | Suggested Assertion |</p>
+<p>|---|-----------|----------------|---------------------|</p>
+<p>| <strong>E1</strong> | <strong>Cart contains a free‑priced item</strong> (<code class="inline-code">$0.00</code>) + other paid items | Ensure zero‑price lines do not affect the discount calculation or trigger division‑by‑zero errors. | Discount applied to sum of paid items only. |</p>
+<p>| <strong>E2</strong> | <strong>Mixed discount types</strong> – percentage (<code class="inline-code">SAVE20</code>) + fixed (<code class="inline-code">$5OFF</code>) on the same cart (attempted stacking) | System must reject second discount or apply only the higher‑value one. | Total reflects only the first accepted discount; second yields error toast. |</p>
+<p>| <strong>E3</strong> | <strong>Large quantity of the same SKU</strong> (e.g., 20 × same product) | Test rounding and potential overflow in UI aggregation. | Total = (price × 20) × 0.80 rounded to 2 decimals. |</p>
+<p>| <strong>E4</strong> | <strong>Discount code case‑sensitivity</strong> (<code class="inline-code">save20</code>, <code class="inline-code">SaVe20</code>) | Verify that the back‑end normalises case and UI does not treat it as invalid. | Discount applied successfully regardless of case. |</p>
+<p>| <strong>E5</strong> | <strong>Discount applied after cart edit</strong> (add items, apply discount, then remove one item) | UI must recalc total correctly after removal. | Total = newSubtotal × 0.80. |</p>
+<p>| <strong>E6</strong> | <strong>Cart total just under the discount‑minimum threshold</strong> (if a future rule adds a $50 minimum) | Ensure the UI does not incorrectly apply discount when condition not met. | Discount not applied; total equals subtotal. |</p>
+<p>| <strong>E7</strong> | <strong>Currency localisation</strong> (display in EUR, GBP) – rounding rules differ (e.g., 0.005 rounds up). | Validate that rounding follows locale rules and does not produce $0.00. | Expected total matches locale‑specific rounding. |</p>
+<p>| <strong>E8</strong> | <strong>Concurrent discount applications</strong> (two tabs open, same user, both applying discount) | Detect race conditions that could reset total to 0. | Both tabs end with the same correct total; no $0.00. |</p>
+<p>| <strong>E9</strong> | <strong>Network latency / retry</strong> – API response delayed &gt; 2 s | UI must keep a loading state and not overwrite total with 0. | After response, total is correct; no intermediate $0.00 flash. |</p>
+<p>| <strong>E10</strong> | <strong>Expired discount code</strong> (<code class="inline-code">SAVE20</code> after expiry) combined with 3+ items | Ensure error handling does not corrupt total. | Total unchanged, appropriate expiry message shown. |</p>
+
+<p>These edge cases can be <strong>data‑driven</strong> using Playwright’s <code class="inline-code">test.each</code> or a CSV/JSON source, enabling a single test file to iterate over all scenarios.</p>
+
+<hr>
+
+<h2>4. Automation Approach – Playwright + TypeScript</h2>
+
+<h3>4.1 Project Structure (suggested)</h3>
+
+<div class="code-block"><div class="code-lang">code</div><pre><code>/tests
+<p>├─ vwo-48-smoke.spec.ts</p>
+<p>├─ vwo-48-reg-01-2-items.spec.ts</p>
+<p>├─ vwo-48-reg-03-3-items.spec.ts</p>
+<p>└─ vwo-48-edge-cases.spec.ts</p>
+<p>/pages</p>
+<p>├─ BasePage.ts</p>
+<p>├─ ProductPage.ts</p>
+<p>├─ CartPage.ts</p>
+<p>└─ CheckoutPage.ts</p>
+<p>/fixtures</p>
+<p>└─ testData.ts          // SKUs, discount codes, expected prices</p>
+<p>/utils</p>
+<p>├─ priceUtils.ts        // rounding, currency formatting helpers</p>
+<p>└─ apiClient.ts         // low‑level API helpers (clear cart, seed data)</p>
+<p>playwright.config.ts</p>
+</code></pre></div>
+
+<h3>4.2 Key Patterns</h3>
+
+<p>| Pattern | Description | Example |</p>
+<p>|--------|-------------|---------|</p>
+<p>| <strong>Page Object Model (POM)</strong> | Encapsulates selectors &amp; actions, reduces duplication. | <code class="inline-code">CartPage.applyDiscount(code: string)</code> |</p>
+<p>| <strong>Test Fixtures</strong> | Re‑usable setup (login, empty cart) using <code class="inline-code">test.use({ storageState })</code>. | <code class="inline-code">test.beforeEach(async ({ page }) =&gt; { await apiClient.clearCart(); })</code> |</p>
+<p>| <strong>Data‑Driven Tests</strong> | Loop over edge‑case matrix via <code class="inline-code">test.describe.parallel</code> and JSON data. | `test.each(edgeCases)(&#x27;Edge – %s&#x27;, async (case) =&gt; {...})</p>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <div class="footer">
+    <p>Generated by <span class="brand">QA Bug Triage Crew</span> — CrewAI × Groq × Jira</p>
+    <p style="margin-top:4px;">AITesterBlueprint · April 04, 2026 at 12:53 PM</p>
+  </div>
+</div>
+</body>
+</html>

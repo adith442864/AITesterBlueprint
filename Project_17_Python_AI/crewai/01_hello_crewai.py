@@ -1,6 +1,9 @@
 from crewai import Agent, Task, Crew
 from crewai import LLM
 import os
+from dotenv import load_dotenv
+
+load_dotenv()
 # Step 0 - set the llm. brain
 groq_llm = LLM(
     model="groq/openai/gpt-oss-120b",
@@ -15,7 +18,6 @@ qa_agent = Agent(
     llm=groq_llm,
     verbose=True
 )
-
 
 
 
