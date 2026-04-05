@@ -412,3 +412,670 @@ This course material is part of the **AI Tester Blueprint** series.
 *Empowering testers to harness the power of AI — from local LLMs to autonomous agents*
 
 </div>
+
+---
+
+## 📂 Detailed Project Contents
+
+<details>
+<summary><strong>Click to expand and explore the contents of each project folder</strong></summary>
+
+### Project_00_LLM_Basics
+Contains the core files and implementations for Project 00 LLM Basics.
+
+```text
+📁 Project_00_LLM_Basics/
+    📄 LLMBasics.md
+    📄 LLMBasicsTutorial.html
+    📄 LLM_glossary.html
+```
+
+### Project_01_LocalTestCaseGenerator
+Contains the core files and implementations for Project 01 LocalTestCaseGenerator.
+
+```text
+📁 Project_01_LocalTestCaseGenerator/
+    📄 backend.log
+    📄 frontend.log
+    📄 progress.md
+    📄 start_system.sh
+    📄 task_plan.md
+    📄 BLAST.md
+    📄 README.md
+    📄 .gitignore
+    📄 findings.md
+    📄 gemini.md
+    📁 tools/
+        📄 verify_ollama.py
+        📄 .keep
+        📄 generate_test_cases.py
+    📁 frontend/
+        📄 index.html
+    📁 backend/
+        📄 requirements.txt
+        📄 app.py
+    📁 architecture/
+        📄 SOP_generate_test_cases.md
+```
+
+### Project_02_Selenium2PlaywrightLocalLLM
+Contains the core files and implementations for Project 02 Selenium2PlaywrightLocalLLM.
+
+```text
+📁 Project_02_Selenium2PlaywrightLocalLLM/
+    📄 server.js
+    📄 B.L.A.S.T.md
+    📄 progress.md
+    📄 task_plan.md
+    📄 README.md
+    📄 .gitignore
+    📄 package-lock.json
+    📄 package.json
+    📄 findings.md
+    📄 gemini.md
+    📁 ui/
+        📄 tsconfig.node.json
+        📄 index.html
+        📄 tailwind.config.js
+        📄 tsconfig.app.json
+        📄 README.md
+        📄 .gitignore
+        📄 package-lock.json
+        📄 package.json
+        📄 tsconfig.json
+        📄 eslint.config.js
+        📄 vite.config.ts
+        📄 postcss.config.js
+        📁 public/
+            📄 vite.svg
+        📁 src/
+            📄 App.tsx
+            📄 main.tsx
+            📄 App.css
+            📄 index.css
+            📁 assets/
+                📄 react.svg
+    📁 tools/
+        📄 test_ollama.js
+    📁 architecture/
+        📄 1_prompt_engineering.md
+```
+
+### Project_03_RICE_POT_PROMPT_SeleniumFramework
+Contains the core files and implementations for Project 03 RICE POT PROMPT SeleniumFramework.
+
+```text
+📁 Project_03_RICE_POT_PROMPT_SeleniumFramework/
+    📄 pom.xml
+    📄 README.md
+    📄 .gitignore
+    📄 testng.xml
+    📁 target/
+        📁 test-classes/
+            📁 com/
+                📁 salesforce/
+                    📁 tests/
+                        📄 LoginTest.class
+                    📁 base/
+                        📄 BaseTest.class
+        📁 classes/
+            📁 com/
+                📁 salesforce/
+                    📁 pages/
+                        📄 LoginPage.class
+    📁 src/
+        📁 test/
+            📁 java/
+                📁 com/
+                    📁 salesforce/
+                        📁 tests/
+                            📄 LoginTest.java
+                        📁 base/
+                            📄 BaseTest.java
+        📁 main/
+            📁 java/
+                📁 com/
+                    📁 salesforce/
+                        📁 pages/
+                            📄 LoginPage.java
+```
+
+### Project_04_LocalLLM_PROMPT_TEMPLATE
+Contains the core files and implementations for Project 04 LocalLLM PROMPT TEMPLATE.
+
+```text
+📁 Project_04_LocalLLM_PROMPT_TEMPLATE/
+    📄 Task2_BUG_Report.md
+    📄 context_constraints.md
+    📄 Product Requirements Document_ VWO Login Dashboard (1).pdf
+    📄 package-lock.json
+    📄 package.json
+    📄 prd_content.txt
+    📄 tsconfig.json
+    📄 Task1_TC_PRD.md
+    📄 playwright.config.ts
+    📄 context_project.md_vwo.MD
+    📁 src/
+        📁 tests/
+        📁 utils/
+        📁 data/
+        📁 pages/
+            📄 BasePage.ts
+```
+
+### Project_05_ClaudeCodeJobAssistantBoard
+Contains the core files and implementations for Project 05 ClaudeCodeJobAssistantBoard.
+
+```text
+📁 Project_05_ClaudeCodeJobAssistantBoard/
+    📄 .gitkeep
+    📁 job-board-assistant/
+        📄 tsconfig.node.json
+        📄 index.html
+        📄 tsconfig.app.json
+        📄 README.md
+        📄 .gitignore
+        📄 package-lock.json
+        📄 package.json
+        📄 tsconfig.json
+        📄 eslint.config.js
+        📄 vite.config.ts
+        📄 postcss.config.js
+        📁 dist/
+            📄 index.html
+            📄 vite.svg
+            📁 assets/
+                📄 index-8YDhLNMG.css
+                📄 index-BovEhFqt.js
+        📁 public/
+            📄 vite.svg
+        📁 src/
+            📄 App.tsx
+            📄 main.tsx
+            📄 App.css
+            📄 index.css
+            📁 types/
+                📄 index.ts
+            📁 components/
+                📄 JobCard.tsx
+                📄 JobModal.tsx
+                📄 Statistics.tsx
+                📄 KanbanColumn.tsx
+            📁 hooks/
+                📄 useLocalStorage.ts
+            📁 assets/
+                📄 react.svg
+```
+
+### Project_06_ResumeFix_LinkedIn
+Contains the core files and implementations for Project 06 ResumeFix LinkedIn.
+
+```text
+📁 Project_06_ResumeFix_LinkedIn/
+    📄 Resume_FIX.zip
+    📁 Resume_FIX/
+        📄 Pramod_Dutta_Resume_PhysicsWallah_QA_Manager.docx
+        📄 Pramod_Dutta_Resume_PhysicsWallah_QA_Manager.pdf
+```
+
+### Project_07_TestPlan_AI_AGENT_JIRA
+Contains the core files and implementations for Project 07 TestPlan AI AGENT JIRA.
+
+```text
+📁 Project_07_TestPlan_AI_AGENT_JIRA/
+    📄 progress.md
+    📄 task_plan.md
+    📄 BLAST.md
+    📄 findings.md
+    📄 gemini.md
+    📄 AGENTS.md
+    📁 intelligent-test-plan-agent/
+        📄 .env.example
+        📁 frontend/
+            📄 tsconfig.node.json
+            📄 index.html
+            📄 tailwind.config.js
+            📄 package-lock.json
+            📄 package.json
+            📄 tsconfig.json
+            📄 vite.config.ts
+            📄 postcss.config.js
+            📁 public/
+                📄 vite.svg
+            📁 src/
+                📄 App.tsx
+                📄 main.tsx
+                📄 index.css
+                📁 components/
+                    📄 MainLayout.tsx
+                    📁 ui/
+                        📄 tabs.tsx
+                        📄 card.tsx
+                        📄 slider.tsx
+                        📄 toaster.tsx
+                        📄 label.tsx
+                        📄 switch.tsx
+                        📄 badge.tsx
+                        📄 button.tsx
+                        📄 toast.tsx
+                        📄 select.tsx
+                        📄 textarea.tsx
+                        📄 input.tsx
+                    📁 forms/
+                    📁 jira-display/
+                📁 hooks/
+                    📄 use-toast.ts
+                📁 lib/
+                    📄 utils.ts
+                📁 pages/
+                    📄 Settings.tsx
+                    📄 Dashboard.tsx
+                    📄 History.tsx
+                📁 services/
+                    📄 api.ts
+        📁 backend/
+            📄 package-lock.json
+            📄 package.json
+            📄 tsconfig.json
+            📄 .env.example
+            📁 src/
+                📄 index.ts
+                📁 database/
+                    📄 schema.sql
+                    📄 db.ts
+                📁 utils/
+                    📄 errors.ts
+                    📄 validators.ts
+                📁 routes/
+                    📄 jira.ts
+                    📄 settings.ts
+                    📄 templates.ts
+                    📄 llm.ts
+                📁 services/
+                    📄 jira-client.ts
+                    📄 pdf-parser.ts
+                    📄 secure-storage.ts
+                    📁 {llm-providers}/
+                    📁 llm-providers/
+                        📄 ollama-provider.ts
+                        📄 groq-provider.ts
+        📁 prompt/
+            📄 convertsion.md
+        📁 templates/
+            📄 2eb6683f-909b-45f8-becd-15a785d0f7ad-TestPlan.pdf
+        📁 .tmp/
+        📁 data/
+            📄 app.db
+            📄 7df37823-cafa-404e-94f1-e09c8ee44c2b.md
+    📁 prompt/
+        📄 prompt.md
+    📁 templates/
+        📄 TestPlan.pdf
+```
+
+### Project_08_n8n_Learning
+Contains the core files and implementations for Project 08 n8n Learning.
+
+```text
+📁 Project_08_n8n_Learning/
+    📄 AI_Batch_003_TestGen_Creator_Our_PRD_Excel.json
+    📄 Testcase_GEN_prompt_AI_AGENT.md
+    📄 JIRA AI Agent.json
+    📄 .gitkeep
+    📄 LF_RAG_TestCase_PDF_CSV_TC (2).json
+    📄 README.md
+    📄 AI_Batch_002_Test_PRD_JIRA_ID.md
+    📄 AI_Batch_001.json
+    📁 Project_01_Basic_AI_Chat/
+        📄 README.md
+    📁 Project_05_RAG_TestCase_LangFlow/
+        📄 README.md
+    📁 Project_04_Jira_AI_Agent/
+        📄 README.md
+    📁 Project_02_TestGen_PRD_Jira/
+        📄 README.md
+    📁 Project_03_TestGen_Excel_Export/
+        📄 README.md
+```
+
+### Project_09_Content-Creation-n8n
+Contains the core files and implementations for Project 09 Content-Creation-n8n.
+
+```text
+📁 Project_09_Content-Creation-n8n/
+    📄 BLAST.md
+    📄 idea.md
+```
+
+### Project_10_BugSnap-BugReportEnhancer
+Contains the core files and implementations for Project 10 BugSnap-BugReportEnhancer.
+
+```text
+📁 Project_10_BugSnap-BugReportEnhancer/
+    📄 repo.md
+    📄 DB.json
+```
+
+### Project_11_LangFlow
+Contains the core files and implementations for Project 11 LangFlow.
+
+```text
+📁 Project_11_LangFlow/
+    📄 README.md
+    📁 01_LangFlow_QuickStart/
+        📄 jira_ticket_testplan_langflow.json
+        📄 jira_story_score_html_agent_langflow.json
+        📄 README.md
+        📄 rice_pot_testcase_generator_langflow.json
+        📄 pdf_to_json_agent_langflow.json
+```
+
+### Project_12_RAG_Basics
+Contains the core files and implementations for Project 12 RAG Basics.
+
+```text
+📁 Project_12_RAG_Basics/
+    📄 01_Introduction_to_RAG.md
+    📄 README.md
+    📁 02_Naive_Basic_RAG/
+        📄 README.md
+    📁 03_Advanced_RAG/
+        📄 README.md
+    📁 11_Contextual_RAG/
+        📄 README.md
+    📁 07_Self_RAG/
+        📄 README.md
+    📁 04_Modular_RAG/
+        📄 README.md
+    📁 08_Corrective_RAG/
+        📄 README.md
+    📁 09_Hybrid_RAG/
+        📄 README.md
+    📁 12_RAG_Evaluation/
+        📄 README.md
+    📁 10_MultiModal_RAG/
+        📄 README.md
+    📁 05_Graph_RAG/
+        📄 README.md
+    📁 06_Agentic_RAG/
+        📄 README.md
+    📁 RAG_Documents/
+        📄 PRD_VWO.pdf
+```
+
+### Project_13_RAG_with_LangFlow
+Contains the core files and implementations for Project 13 RAG with LangFlow.
+
+```text
+📁 Project_13_RAG_with_LangFlow/
+    📄 12_Learning_Path.md
+    📄 README.md
+    📄 LangFlow_Tutorial.md
+    📄 build_langflow_flows.py
+    📁 05_Graph_RAG_Flow/
+        📄 README.md
+        📄 graph_rag_langflow.json
+    📁 07_Self_RAG_Flow/
+        📄 README.md
+        📄 self_rag_langflow.json
+    📁 09_Hybrid_RAG_Flow/
+        📄 hybrid_rag_langflow.json
+        📄 README.md
+    📁 08_Corrective_RAG_Flow/
+        📄 corrective_rag_langflow.json
+        📄 README.md
+        📄 corrective_rag_n8n_flow.json
+    📁 11_Contextual_RAG_Flow/
+        📄 contextual_rag_langflow.json
+        📄 README.md
+    📁 10_MultiModal_RAG_Flow/
+        📄 README.md
+        📄 multimodal_rag_langflow.json
+    📁 03_Advanced_RAG_Flow/
+        📄 02_Advance Rag.json
+        📄 Advance RAG wiht Reranker_n8n.json
+        📄 advanced_rag_langflow.json
+        📄 README.md
+        📄 advanced_rag_langflow_v6_fixed.json
+        📄 advanced_rag_n8n_flow.json
+    📁 06_Agentic_RAG_Flow/
+        📄 agentic_rag_langflow.json
+        📄 README.md
+        📄 agentic_rag_n8n_flow.json
+    📁 04_Modular_RAG_Flow/
+        📄 modular_rag_langflow.json
+        📄 README.md
+    📁 02_Naive_RAG_Flow/
+        📄 naive_rag_langflow.json
+        📄 README.md
+        📄 naive_rag_n8n_flow.json
+```
+
+### Project_14_RAG_VIBE_CODING
+Contains the core files and implementations for Project 14 RAG VIBE CODING.
+
+```text
+📁 Project_14_RAG_VIBE_CODING/
+    📄 requirements.txt
+    📄 .env
+    📄 app.py
+    📁 ChromaDB_viewer/
+        📄 README.md
+        📄 app.py
+    📁 rag/
+        📄 generator.py
+        📄 router.py
+        📄 ingester.py
+    📁 static/
+        📄 index.html
+    📁 temp_uploads/
+```
+
+### Project_15_Vector_Embeddings_Visualizer
+Contains the core files and implementations for Project 15 Vector Embeddings Visualizer.
+
+```text
+📁 Project_15_Vector_Embeddings_Visualizer/
+    📄 start_app.sh
+    📄 README.md
+    📄 .gitignore
+    📄 .env.example
+    📁 frontend/
+        📄 index.html
+    📁 backend/
+        📄 requirements.txt
+        📄 app.py
+```
+
+### Project_16_MCP_Basic
+Contains the core files and implementations for Project 16 MCP Basic.
+
+```text
+📁 Project_16_MCP_Basic/
+    📄 TASK.MD
+    📁 Project_01_MCP_Playwright/
+        📄 result.html
+        📁 test_deliverables/
+```
+
+### Project_17_Python_AI
+Contains the core files and implementations for Project 17 Python AI.
+
+```text
+📁 Project_17_Python_AI/
+    📄 .env
+    📁 python_basics/
+        📄 09_IQ_LIST.py
+        📄 20_OS.py
+        📄 04_Multi_LineString.py
+        📄 12_Tuple.py
+        📄 17_Program_Understand.py
+        📄 15_Concept_Type.py
+        📄 03_Strings.py
+        📄 18_Module_Imports.py
+        📄 07_python_list.py
+        📄 02_Variables_Data_Types.py
+        📄 11_Dict.py
+        📄 19_JSON.py
+        📄 06_IF_ELSE.py
+        📄 05_Strings.py
+        📄 10_While_loop.py
+        📄 01_Hello.py
+        📄 13_Functions.py
+        📄 14_Functons.py
+        📄 21_CREW_AI.py
+        📄 16_Lambda.py
+        📄 08_Loop.py
+    📁 utils_extra/
+        📄 utils.py
+```
+
+### Project_18_MCP_CREATION
+Contains the core files and implementations for Project 18 MCP CREATION.
+
+```text
+📁 Project_18_MCP_CREATION/
+    📄 .gitkeep
+```
+
+### Project_19_CREW_AI_AGENT
+Contains the core files and implementations for Project 19 CREW AI AGENT.
+
+```text
+📁 Project_19_CREW_AI_AGENT/
+    📄 003_ai_agent_memory.py
+    📄 001_ai_agent_crew.py
+    📄 .env
+    📄 002_ai_agent_tools.py
+    📄 llm_config.py
+    📁 crewai/
+        📄 01_hello_crewai.py
+        📄 03_Building_QABugTriageCrew.py
+        📄 bug_triage_report.html
+        📄 06_FETCH_JIRA_CREATE_TEST_PLAN_AI_AGENT_Add_Memory.py
+        📄 03_run_and_report.py
+        📄 .gitignore
+        📄 04_Custom_QA_Tools.py
+        📄 .env
+        📄 02_Research_Writer_AI_AGENT.py
+        📄 05_FETCH_JIRA_CREATE_TEST_PLAN_AI_AGENT.py
+        📁 output/
+            📄 TestPlan_VWO-48_Memory_20260404.docx
+            📄 TestPlan_VWO-48_20260404.docx
+        📁 Task/
+            📄 conftest.py
+            📄 pytest.ini
+            📄 __init__.py
+            📄 .gitignore
+            📁 assignment_1/
+                📄 __init__.py
+                📄 test_test_case_generator.py
+                📄 test_case_generator_crew.py
+            📁 assignment_2/
+                📄 test_flaky_test_investigator.py
+                📄 __init__.py
+                📄 flaky_test_investigator_crew.py
+            📁 assignment_3/
+                📄 test_api_health_war_room.py
+                📄 __init__.py
+                📄 api_health_war_room_crew.py
+    📁 learn/
+        📁 chapter1/
+            📁 test_planner/
+                📄 uv.lock
+                📄 report.md
+                📄 pyproject.toml
+                📄 README.md
+                📄 .gitignore
+                📄 .env
+                📄 AGENTS.md
+                📁 tests/
+                📁 knowledge/
+                    📄 user_preference.txt
+                📁 src/
+                    📁 test_planner/
+                        📄 __init__.py
+                        📄 crew.py
+                        📄 main.py
+                        📁 tools/
+                            📄 __init__.py
+                            📄 custom_tool.py
+                        📁 config/
+                            📄 agents.yaml
+                            📄 tasks.yaml
+        📁 chapter2/
+            📁 test_plan_generator/
+                📄 uv.lock
+                📄 pyproject.toml
+                📄 README.md
+                📄 .gitignore
+                📄 .env
+                📄 AGENTS.md
+                📁 tests/
+                📁 knowledge/
+                    📄 user_preference.txt
+                📁 src/
+                    📁 test_plan_generator/
+                        📄 __init__.py
+                        📄 crew.py
+                        📄 main.py
+                        📁 tools/
+                            📄 __init__.py
+                            📄 custom_tool.py
+                        📁 config/
+                            📄 agents.yaml
+                            📄 tasks.yaml
+        📁 chapter3/
+            📁 bug_reporter/
+                📄 uv.lock
+                📄 pyproject.toml
+                📄 README.md
+                📄 .gitignore
+                📄 .env
+                📄 AGENTS.md
+                📁 tests/
+                📁 knowledge/
+                    📄 user_preference.txt
+                📁 src/
+                    📁 bug_reporter/
+                        📄 __init__.py
+                        📄 crew.py
+                        📄 main.py
+                        📁 tools/
+                            📄 __init__.py
+                            📄 custom_tool.py
+                        📁 config/
+                            📄 agents.yaml
+                            📄 tasks.yaml
+        📁 chapter4/
+            📁 rca_generator/
+                📄 uv.lock
+                📄 pyproject.toml
+                📄 README.md
+                📄 .gitignore
+                📄 .env
+                📄 AGENTS.md
+                📁 tests/
+                📁 knowledge/
+                    📄 user_preference.txt
+                📁 src/
+                    📁 rca_generator/
+                        📄 __init__.py
+                        📄 crew.py
+                        📄 main.py
+                        📁 tools/
+                            📄 __init__.py
+                            📄 custom_tool.py
+                        📁 config/
+                            📄 agents.yaml
+                            📄 tasks.yaml
+    📁 KT/
+        📄 003_ai_agent_memory.py
+        📄 001_ai_agent_crew.py
+        📄 002_ai_agent_tools.md
+        📄 003_ai_agent_memory.md
+        📄 002_ai_agent_tools.py
+        📄 001_ai_agent_crew.md
+```
+
+</details>
