@@ -288,6 +288,62 @@ ollama pull llama3.2
 
 ---
 
+### 🔹 Project 16: Basic MCP Integrations
+
+> **Learning how to build and communicate with Model Context Protocol (MCP) servers**
+
+| Aspect | Details |
+|--------|---------|
+| **Focus** | Model Context Protocol, Server Creation |
+| **Tech Stack** | Python, FastMCP, Playwright |
+| **Key Concept** | Connecting local tools/resources securely to AI Assistants |
+
+📂 **[View Project Folder →](./Project_16_MCP_Basic/)**
+
+---
+
+### 🔹 Project 17: Python AI Foundations
+
+> **Core Python concepts tailored for building AI agents and workflows**
+
+| Aspect | Details |
+|--------|---------|
+| **Focus** | Python Basics, Advanced Python, CrewAI Basics |
+| **Tech Stack** | Python 3, CLI |
+| **Key Concept** | Strong programmatic foundations for LLM orchestration |
+
+📂 **[View Project Folder →](./Project_17_Python_AI/)**
+
+---
+
+### 🔹 Project 18: Crew AI Agents
+
+> **Building complex multi-agent systems for QA processes**
+
+| Aspect | Details |
+|--------|---------|
+| **Focus** | Multi-Agent Systems, JIRA integration, Automation |
+| **Tech Stack** | Python, CrewAI, JIRA REST APIs |
+| **Key Concept** | Autonomous task execution, memory, and specialized QA agents |
+
+📂 **[View Project Folder →](./Project_18_CREW_AI_AGENT/)**
+
+---
+
+### 🔹 Project 19: MCP Creation AI Agent
+
+> **Creating custom Model Context Protocol servers to expose proprietary QA tools**
+
+| Aspect | Details |
+|--------|---------|
+| **Focus** | MCP Server Development, Exposing Resources & Prompts |
+| **Tech Stack** | Python, FastMCP |
+| **Key Concept** | Making dashboards, remote servers, and specific tools readable by AI |
+
+📂 **[View Project Folder →](./Project_19_MCP_CREATION_AI_AGENT/)**
+
+---
+
 ## 🛠️ Tech Stack
 
 <div align="center">
@@ -373,6 +429,10 @@ AITesterBlueprint/
 ├── Project_13_RAG_with_LangFlow/                   # 🔗 Visual RAG pipelines with LangFlow
 ├── Project_14_RAG_VIBE_CODING/                     # 🧠 Full-stack modular RAG app
 ├── Project_15_Vector_Embeddings_Visualizer/        # 📐 Embeddings + chunking visualizer
+├── Project_16_MCP_Basic/                           # 🔌 MCP Basics
+├── Project_17_Python_AI/                           # 🐍 Python AI Foundations
+├── Project_18_CREW_AI_AGENT/                       # 🤖 CREW AI Agents
+├── Project_19_MCP_CREATION_AI_AGENT/               # 🛠️ Custom MCP Servers
 └── README.md                                      # 📖 This File
 ```
 
