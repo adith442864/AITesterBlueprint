@@ -930,19 +930,27 @@ Contains the core files and implementations for Project 17 Python AI.
         📄 utils.py
 ```
 
-### Project_18_MCP_CREATION
-Contains the core files and implementations for Project 18 MCP CREATION.
+### Project_19_MCP_CREATION_AI_AGENT
+Contains the core files and implementations for Project 19 MCP CREATION AI AGENT.
 
 ```text
-📁 Project_18_MCP_CREATION/
+📁 Project_19_MCP_CREATION_AI_AGENT/
     📄 .gitkeep
+    📄 KT.md
+    📄 test_mcp_client.py
+    📁 src/
+        📄 01_HelloWorldCalculator_MCP.py
+        📄 02_Weather_MCP.py
+        📄 03_QA_Dashboard.py
+        📄 04_QA_Dashboard_REAL_DATA.py
+        📄 server.py
 ```
 
-### Project_19_CREW_AI_AGENT
-Contains the core files and implementations for Project 19 CREW AI AGENT.
+### Project_18_CREW_AI_AGENT
+Contains the core files and implementations for Project 18 CREW AI AGENT.
 
 ```text
-📁 Project_19_CREW_AI_AGENT/
+📁 Project_18_CREW_AI_AGENT/
     📄 003_ai_agent_memory.py
     📄 001_ai_agent_crew.py
     📄 .env
