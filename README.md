@@ -3,9 +3,9 @@
 <div align="center">
 
 ![AI Tester Blueprint](https://img.shields.io/badge/AI_Tester_Blueprint-Batch_Course-blueviolet?style=for-the-badge&logo=robot)
-![Projects](https://img.shields.io/badge/Projects-15-green?style=for-the-badge)
+![Projects](https://img.shields.io/badge/Projects-22-green?style=for-the-badge)
 ![Status](https://img.shields.io/badge/Status-Active-success?style=for-the-badge)
-![Last Updated](https://img.shields.io/badge/Updated-March_2026-blue?style=for-the-badge)
+![Last Updated](https://img.shields.io/badge/Updated-April_2026-blue?style=for-the-badge)
 
 **A comprehensive hands-on course for QA Engineers to master AI-powered testing tools and techniques.**
 
@@ -344,6 +344,57 @@ ollama pull llama3.2
 
 ---
 
+### 🔹 Project 20: LLM Evaluation with DeepEval (Foundations)
+
+> **First taste of LLM evaluation: write pytest-style tests for a local Ollama LLM with DeepEval metrics**
+
+| Aspect | Details |
+|--------|---------|
+| **Focus** | LLM Evaluation Foundations, Local Judges |
+| **Tech Stack** | Python, DeepEval, Ollama |
+| **Key Concept** | Treating LLM outputs as test cases — Answer Relevancy, Faithfulness, Hallucination |
+
+📂 **[View Project Folder →](./Project_20_LLM_EVAL_SDET/)**
+
+---
+
+### 🔹 Project 21: DeepEval for SDET (Practical Lab)
+
+> **Three-app lab: a Groq chatbot, a manual metric verifier, and a guided lesson-style verifier walking you through 9 metrics**
+
+| Aspect | Details |
+|--------|---------|
+| **Focus** | Production-grade SDET patterns for LLM testing |
+| **Tech Stack** | Python (FastAPI), Jinja2, Groq (Llama 4), OpenAI (GPT-4o-mini), DeepEval |
+| **Key Concept** | Custom G-Eval metrics, threshold-based quality gates, regression suites |
+
+📂 **[View Project Folder →](./Project_21_DeepEval_SDET/)**
+
+---
+
+### 🔹 Project 23: DeepEval Framework (Capstone)
+
+> **Three independent subsystems + a live web dashboard: a React e-commerce chatbot, a full RAG Explorer (ChromaDB + Nomic Embed), and a 22-metric DeepEval framework with swappable judge LLMs (OpenAI / Groq / local Ollama)**
+
+| Aspect | Details |
+|--------|---------|
+| **Focus** | End-to-end LLM evaluation framework with live dashboard |
+| **Tech Stack** | React (Vite), FastAPI, ChromaDB, Ollama (`nomic-embed-text`), Groq, OpenAI, DeepEval, pytest |
+| **Key Concept** | Provider-agnostic judge LLM via OpenAI-compatible APIs + `instructor`; 22 metrics covering quality, retrieval, safety, G-Eval, and conversational |
+
+**Demo screenshots:**
+
+| | |
+|---|---|
+| ![DeepEval Dashboard](./Project_23_DeepEvAL_Framework/screenshots/DeepEval-Dashboard-04-26-2026_12_40_PM.png) | ![ShopSphere Chatbot](./Project_23_DeepEvAL_Framework/screenshots/ShopSphere-—-Support-Chat-04-26-2026_12_41_PM.png) |
+| **DeepEval Dashboard** — live metric runs with pass/fail per card | **ShopSphere Chatbot** — React UI on top of Groq |
+| ![RAG Explorer](./Project_23_DeepEvAL_Framework/screenshots/Dashboard-·-RAG-Explorer-04-26-2026_12_41_PM.png) | |
+| **RAG Explorer** — pipeline status from ingest through answer | |
+
+📂 **[View Project Folder →](./Project_23_DeepEvAL_Framework/)**
+
+---
+
 ## 🛠️ Tech Stack
 
 <div align="center">
@@ -433,6 +484,9 @@ AITesterBlueprint/
 ├── Project_17_Python_AI/                           # 🐍 Python AI Foundations
 ├── Project_18_CREW_AI_AGENT/                       # 🤖 CREW AI Agents
 ├── Project_19_MCP_CREATION_AI_AGENT/               # 🛠️ Custom MCP Servers
+├── Project_20_LLM_EVAL_SDET/                       # 🧪 LLM Evaluation Foundations (DeepEval + Ollama)
+├── Project_21_DeepEval_SDET/                       # 🔬 DeepEval Practical Lab (chatbot + verifier)
+├── Project_23_DeepEvAL_Framework/                  # 🚀 Capstone: chatbot + RAG + 22-metric DeepEval dashboard
 └── README.md                                      # 📖 This File
 ```
 
